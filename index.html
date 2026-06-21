@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Insurtech Acquisition Screening Platform</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div class="app-shell">
+
+  <aside class="sidebar">
+    <span class="brand">Insurtech Screen<span class="dot">.</span></span>
+    <div class="navgroup-label">Explore</div>
+    <a class="navlink" data-view="dashboard" href="#dashboard"><span class="navicon">📊</span> Dashboard</a>
+    <a class="navlink" data-view="valuechain" href="#valuechain"><span class="navicon">🧩</span> Value Chain</a>
+    <a class="navlink" data-view="funding" href="#funding"><span class="navicon">💰</span> Funding</a>
+    <a class="navlink" data-view="financials" href="#financials"><span class="navicon">📈</span> Financial Comparison</a>
+    <div class="navgroup-label">Screen & Decide</div>
+    <a class="navlink" data-view="screener" href="#screener"><span class="navicon">🔎</span> Company Screener</a>
+    <a class="navlink" data-view="rankings" href="#rankings"><span class="navicon">🏆</span> Rankings</a>
+    <a class="navlink" data-view="advscreen" href="#advscreen"><span class="navicon">🧪</span> Advanced Screening Mode</a>
+    <a class="navlink" data-view="comparison" href="#comparison"><span class="navicon">⇄</span> Comparison</a>
+    <div class="navgroup-label">Decision</div>
+    <a class="navlink" data-view="shortlist" href="#shortlist"><span class="navicon">★</span> Investment Shortlist</a>
+    <a class="navlink" data-view="reports" href="#reports"><span class="navicon">📄</span> Reports & Export</a>
+
+    <div class="navgroup-label">Playbooks</div>
+    <a class="navlink" data-view="playbooks" href="#playbooks"><span class="navicon">🎯</span> Company Playbooks</a>
+
+    <div class="navgroup-label">Prypco Strategy</div>
+    <a class="navlink" data-view="prypco" href="#prypco"><span class="navicon">🏠</span> Prypco Insurtech Map</a>
+
+    <div class="navgroup-label">Feedback</div>
+    <a class="navlink" data-view="comments" href="#comments"><span class="navicon">💬</span> Comments</a>
+
+    <div class="funnel-mini" id="sidebarFunnelMini"></div>
+  </aside>
+
+  <div class="main-col">
+    <header class="topbar">
+      <input type="text" id="globalSearch" class="global-search" placeholder="Search companies, segments, countries...">
+      <div class="topbar-right">
+        <span id="editAccessIndicator" class="edit-access-indicator" onclick="toggleEditAccess()"></span>
+        <div class="avatar">IT</div>
+      </div>
+    </header>
+    <div id="globalSearchResults"></div>
+
+    <main class="page">
+
+      <!-- ===================== DASHBOARD ===================== -->
+      <section id="view-dashboard">
+        <div class="hero">
+          <h1>Market Overview</h1>
+          <p>Executive snapshot of all companies in the screening universe — built only from disclosed data.</p>
+          <div class="stat-row" id="dashKpiGrid"></div>
+        </div>
+
+        <div class="section-title"><span>🎯 Top Picks to Study & Replicate</span></div>
+        <div class="dash-chart-grid">
+          <div class="card" style="padding:20px;">
+            <h3 style="margin-top:0;color:var(--purple);">General — Top by Opportunity Score</h3>
+            <div id="topPicksGeneral"></div>
+            <button class="mini-btn primary" style="margin-top:10px;" onclick="location.hash='#rankings'">See full Rankings →</button>
+          </div>
+          <div class="card" style="padding:20px;">
+            <h3 style="margin-top:0;color:#0d9488;">Prypco — Critical-Priority Initiatives</h3>
+            <div id="topPicksPrypco"></div>
+            <button class="mini-btn primary" style="margin-top:10px;" onclick="location.hash='#prypco'">See full Roadmap →</button>
+          </div>
+        </div>
+
+        <div class="section-title"><span>🛠️ Your Custom Sections</span><button class="mini-btn primary" id="addWidgetBtn" style="margin-left:auto;">+ Add Widget</button></div>
+        <div class="dash-chart-grid" id="customWidgetsGrid"></div>
+
+        <div class="section-title"><span>🧩 Companies by Value Chain Segment</span></div>
+        <div class="card" style="padding:18px;">
+          <div class="treemap" id="segmentTreemap"></div>
+        </div>
+
+        <div class="dash-chart-grid" style="margin-top:18px;">
+          <div>
+            <div class="section-title"><span>🌍 Top Countries by Company Count</span></div>
+            <div class="card" style="padding:18px;"><canvas id="topCountriesChart" width="600" height="380" style="width:100%;"></canvas></div>
+          </div>
+          <div>
+            <div class="section-title"><span>📈 Funding Rounds Recorded by Year</span></div>
+            <div class="card" style="padding:18px;">
+              <canvas id="fundingActivityChart" width="600" height="380" style="width:100%;"></canvas>
+              <p class="footer-note">Count of companies whose <em>last disclosed round</em> falls in each year — not a full historical round count.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="dash-chart-grid" style="margin-top:18px;">
+          <div>
+            <div class="section-title"><span>💎 Total Raised vs. Valuation <span class="badge-count" id="bubbleCount" style="background:#8b5cf6;"></span></span></div>
+            <div class="card" style="padding:18px;"><canvas id="bubbleChart" width="600" height="380" style="width:100%;"></canvas></div>
+          </div>
+          <div>
+            <div class="section-title"><span>🎂 Company Age Distribution</span></div>
+            <div class="card" style="padding:18px;"><canvas id="ageHistogramChart" width="600" height="380" style="width:100%;"></canvas></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SCREENER ===================== -->
+      <section id="view-screener" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#7468dd,#3bc3da 100%);">
+          <h1>Company Screener</h1>
+          <p>Narrow the universe down using company, financial, business-quality, strategic-fit, and risk filters.</p>
+        </div>
+
+        <div class="section-title"><span>🔻 Screening Funnel</span></div>
+        <div class="card" style="padding:18px 18px 6px;">
+          <div class="funnel-viz" id="screenerFunnel"></div>
+        </div>
+
+        <div class="screener-layout" style="margin-top:18px;">
+          <div class="filter-panel" id="screener-filters">
+            <input type="text" id="scrSearch" placeholder="Search name/description..." style="width:100%;margin-bottom:14px;border:1.5px solid rgba(139,92,246,0.18);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:12.5px;">
+
+            <details class="filter-group" open>
+              <summary>Company Information</summary>
+              <div class="filter-row"><label>Segment</label><select id="scrSegment"><option value="">Any</option></select></div>
+              <div class="filter-row"><label>Business Model</label><select id="scrModel"><option value="">Any</option></select></div>
+              <div class="filter-row"><label>Geography Region</label><select id="scrGeo"><option value="">Any</option></select></div>
+              <div class="filter-row"><label>Country</label><select id="scrCountry"><option value="">Any</option></select></div>
+              <div class="filter-row"><label>Founded Year</label>
+                <div class="range-row"><input type="number" id="scrYearMin" placeholder="From"><input type="number" id="scrYearMax" placeholder="To"></div>
+              </div>
+              <div class="filter-row"><label>Ownership Status</label><select id="scrOwnership"><option value="">Any</option></select></div>
+              <div class="filter-row"><label>Public / Private</label>
+                <select id="scrPublicPrivate"><option value="">Any</option><option value="public">Public only</option><option value="private">Private only</option></select>
+              </div>
+            </details>
+
+            <details class="filter-group" open>
+              <summary>Financial</summary>
+              <div class="filter-row"><label>Total Raised ($M)</label>
+                <div class="range-row"><input type="number" id="scrRaisedMin" placeholder="Min"><input type="number" id="scrRaisedMax" placeholder="Max"></div>
+              </div>
+              <div class="filter-row"><label>Valuation ($M)</label>
+                <div class="range-row"><input type="number" id="scrValuationMin" placeholder="Min"><input type="number" id="scrValuationMax" placeholder="Max"></div>
+              </div>
+              <div class="filter-row"><label>Last Round Stage</label><select id="scrDealType"><option value="">Any</option></select></div>
+              <p class="subtle">EBITDA, margins, debt, cash, and enterprise value aren't disclosed for private companies in this dataset.</p>
+            </details>
+
+            <details class="filter-group">
+              <summary>Business Quality (available signals)</summary>
+              <div class="filter-row"><label>Capital Intensity</label><select id="scrCapital"><option value="">Any</option></select></div>
+              <div class="filter-row"><label>Revenue Model</label><select id="scrRevenue"><option value="">Any</option></select></div>
+              <div class="filter-row"><label>Target Customer</label><select id="scrCustomer"><option value="">Any</option></select></div>
+              <div class="filter-row"><label>Go-to-Market Motion</label><select id="scrGtm"><option value="">Any</option></select></div>
+            </details>
+
+            <details class="filter-group">
+              <summary>Strategic Fit — Moat</summary>
+              <div class="chip-select" id="scrMoatChips"></div>
+            </details>
+
+            <details class="filter-group">
+              <summary>Risk Excludes</summary>
+              <div class="filter-row"><label><input type="checkbox" id="scrExcludeAcquired"> Exclude already-acquired/merged companies</label></div>
+              <div class="filter-row"><label><input type="checkbox" id="scrOnlyFunded"> Only companies with disclosed funding</label></div>
+              <p class="subtle">Customer concentration, ESG, legal/regulatory risk, and key-person dependency aren't in this dataset.</p>
+            </details>
+
+            <button class="reset-filters-btn" id="resetFiltersBtn">Reset All Filters</button>
+          </div>
+
+          <div>
+            <div class="screener-results-actions">
+              <span><strong id="screenerResultCount">0</strong> companies match</span>
+              <button class="mini-btn" id="addToShortlistBtn">★ Add <span id="screenerSelectedCount">0</span> selected to Shortlist</button>
+              <button class="mini-btn" id="sendToComparisonBtn">⇄ Compare selected</button>
+              <button class="mini-btn" id="exportScreenerBtn">⬇ Export results (Excel)</button>
+              <button class="mini-btn" style="background:rgba(229,72,77,0.1);color:var(--red);" id="bulkDeleteBtn">🗑️ Delete selected</button>
+              <button class="mini-btn primary" id="openAddCompanyBtn">+ Add Company</button>
+              <button class="mini-btn" id="openBulkAddBtn">+ Bulk Add (paste list)</button>
+            </div>
+            <div class="card" style="overflow:auto;">
+              <table class="grid" id="screenerTable">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th class="sortable" data-sort="name">Company<span class="arrow">▾</span></th>
+                    <th class="sortable" data-sort="segment">Segment<span class="arrow"></span></th>
+                    <th class="sortable" data-sort="businessModel">Business Model<span class="arrow"></span></th>
+                    <th class="sortable" data-sort="geo">Geography<span class="arrow"></span></th>
+                    <th class="sortable" data-sort="yearFounded">Founded<span class="arrow"></span></th>
+                    <th class="sortable" data-sort="totalRaised">Total Raised<span class="arrow"></span></th>
+                    <th>Valuation</th>
+                    <th>Moat</th>
+                  </tr>
+                </thead>
+                <tbody id="screenerTableBody"></tbody>
+              </table>
+            </div>
+            <div class="footer-note" id="screenerMoreNote"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== VALUE CHAIN ===================== -->
+      <section id="view-valuechain" style="display:none;">
+        <div class="hero">
+          <h1>Insurance Value Chain</h1>
+          <p>Browse as boards (one per segment) or as a full segment × business-model matrix.</p>
+        </div>
+
+        <div class="view-tabs">
+          <div class="view-tab active" data-vctab="boards">Boards</div>
+          <div class="view-tab" data-vctab="matrix">Matrix</div>
+        </div>
+
+        <div id="boardGrid" class="board-grid"></div>
+
+        <div id="matrixWrap" class="card matrix-scroll" style="display:none; padding:16px;">
+          <table class="matrix" id="matrixTable"></table>
+        </div>
+
+        <div id="boardDetail" class="hidden">
+          <button class="back-btn" id="backBtn">← Back</button>
+          <div class="detail-header">
+            <h2 id="detailTitle"></h2>
+            <span class="badge-count" id="detailCount" style="background:#8b5cf6"></span>
+          </div>
+          <div class="toolbar">
+            <input type="text" id="detailSearch" placeholder="Search within this view...">
+            <select id="detailModelFilter"><option value="">All business models</option></select>
+          </div>
+          <div class="card" style="overflow:auto;">
+            <table class="grid">
+              <thead><tr><th>Company</th><th>Business Model</th><th>Geography</th><th>Founded</th><th>Description</th></tr></thead>
+              <tbody id="detailTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== RANKINGS ===================== -->
+      <section id="view-rankings" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#f5934f,#e0699f 60%,#8b5cf6 100%);">
+          <h1>Ranking Engine</h1>
+          <p id="scoreMethodologyNote"></p>
+        </div>
+
+        <div class="lens-tab-row" id="rankingsLensTabs"></div>
+
+        <div class="adv-screen-banner" onclick="location.hash='#advscreen'">
+          <div><strong>🧪 Want a more rigorous, multi-stage screening process?</strong>
+          <span class="subtle">Dealbreaker filters, peer-relative scoring, multi-lens validation, and a human-judgment final round — built for presenting to an investment committee.</span></div>
+          <span class="adv-screen-banner-cta">Try Advanced Screening Mode →</span>
+        </div>
+
+        <div class="screener-layout">
+          <div class="weights-panel">
+            <h3 style="margin-top:0;" id="weightsPanelTitle">Score Weights</h3>
+            <div id="weightSliders"></div>
+            <div class="weight-total" id="weightTotal"></div>
+            <button class="reset-filters-btn" id="resetWeightsBtn" style="background:rgba(139,92,246,0.1);color:var(--purple);">Reset to Lens Defaults</button>
+
+            <div class="custom-builder" id="customBuilderWrap" style="display:none;">
+              <h3 style="margin-top:0;">Custom Categories</h3>
+              <div id="customCatRows"></div>
+              <button class="reset-filters-btn" id="addCustomCatBtn" style="background:rgba(63,187,125,0.1);color:#3fbb7d;">+ Add Category</button>
+              <div class="template-row">
+                <input type="text" id="templateNameInput" placeholder="Template name" style="flex:1;padding:6px 8px;border-radius:8px;border:1.5px solid rgba(139,92,246,0.2);font-size:13.5px;font-family:inherit;">
+                <button class="reset-filters-btn" id="saveTemplateBtn" style="background:rgba(139,92,246,0.1);color:var(--purple);">Save Template</button>
+              </div>
+              <div class="template-row">
+                <select id="templateLoadSelect"><option value="">Load saved template…</option></select>
+                <button class="reset-filters-btn" id="deleteTemplateBtn" style="background:rgba(229,72,77,0.1);color:var(--red);">Delete</button>
+              </div>
+            </div>
+
+            <h3>Score Distribution</h3>
+            <canvas id="scoreDistChart" width="280" height="200" style="width:100%;"></canvas>
+          </div>
+
+          <div>
+            <div class="section-title"><span>🏆 Leaderboard</span><span class="badge-count" id="rankingsCount" style="background:#f5934f;"></span></div>
+            <div class="card" style="overflow:auto;">
+              <table class="grid">
+                <thead><tr><th>#</th><th>Company</th><th>Segment</th><th>Score</th><th>Confidence</th><th>Recommendation</th><th>Total Raised</th><th></th></tr></thead>
+                <tbody id="leaderboardBody"></tbody>
+              </table>
+            </div>
+            <p class="footer-note">Showing top 100. Use the Screener first if you want to rank a narrower set. Click any score row to open the full explanation on the Company Profile.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== ADVANCED SCREENING MODE ===================== -->
+      <section id="view-advscreen" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#3bc3da,#8b5cf6 60%,#e0699f 100%);">
+          <h1>Advanced Screening Mode</h1>
+          <p>A 5-stage, defensible screening pipeline — dealbreaker filters, peer-relative scoring, multi-lens validation, and a final human-judgment round. Built to be walked through in an investment committee meeting: every elimination and every ranking is independently inspectable.</p>
+        </div>
+
+        <div class="adv-stepper" id="advStepper"></div>
+        <div class="card" style="padding:18px 22px;margin-bottom:20px;">
+          <div class="funnel-viz" id="advFunnelViz"></div>
+        </div>
+
+        <div class="screener-layout">
+          <div class="weights-panel" id="advAssumptionsPanel">
+            <div style="display:flex;justify-content:space-between;align-items:center;cursor:pointer;" id="advAssumptionsToggle">
+              <h3 style="margin:0;">⚙️ Assumptions</h3>
+              <span id="advAssumptionsCaret">▾</span>
+            </div>
+            <p class="footer-note" style="margin-top:4px;">Every rule and weight here is editable and live-updates all 5 stages downstream.</p>
+            <div id="advAssumptionsBody">
+
+              <h4 class="adv-assump-h">Stage 1 — Dealbreaker Rules</h4>
+              <div id="advDealbreakerRules"></div>
+              <div class="adv-sanity-note" id="advSanityNote"></div>
+
+              <h4 class="adv-assump-h">Stage 2 — Size Bands (by Total Raised, $M)</h4>
+              <div id="advSizeBandInputs"></div>
+
+              <h4 class="adv-assump-h">Stage 3 — Factor Weights</h4>
+              <div id="advStage3CatRows"></div>
+              <button class="reset-filters-btn" id="advAddCatBtn" style="background:rgba(63,187,125,0.1);color:#3fbb7d;">+ Add Category</button>
+              <div class="template-row">
+                <select id="advTemplateLoadSelect"><option value="">Load a saved Rankings template…</option></select>
+              </div>
+              <div class="weight-total" id="advWeightTotal"></div>
+
+              <h4 class="adv-assump-h">Stage 4 — Multi-Lens Validation</h4>
+              <label class="adv-assump-label">Companies carried forward <input type="number" id="advStage4TopNInput" min="5" max="100" value="25"></label>
+              <label class="adv-assump-label">Consensus = top 10 in at least <input type="number" id="advConsensusThresholdInput" min="1" max="3" value="2"> of 3 lenses</label>
+
+              <h4 class="adv-assump-h">Stage 5 — Final Comparison</h4>
+              <label class="adv-assump-label">Quantitative weight <input type="range" id="advBlendRatioInput" min="0" max="100" value="60"><span id="advBlendRatioVal">60%</span></label>
+              <label class="adv-assump-label">Final shortlist size <input type="number" id="advFinalShortlistNInput" min="1" max="20" value="7"></label>
+            </div>
+          </div>
+
+          <div id="advStageContent"></div>
+        </div>
+      </section>
+
+      <!-- ===================== COMPARISON ===================== -->
+      <section id="view-comparison" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#8b5cf6,#3bc3da 100%);">
+          <h1>Company Comparison</h1>
+          <p>Pick 2–5 companies to compare side by side.</p>
+        </div>
+        <div class="compare-picker" id="comparePicker"></div>
+        <div id="compareTableWrap" class="card" style="overflow:auto;padding:4px;"></div>
+        <div class="dash-chart-grid" id="compareCharts" style="margin-top:18px;"></div>
+      </section>
+
+      <!-- ===================== FUNDING ===================== -->
+      <section id="view-funding" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#3fbb7d,#2dc0ac 50%,#3bc3da 100%);">
+          <h1>Funding & Valuations</h1>
+          <p>Total raised, last round size/date, and valuation across companies — where disclosed. Round counts aren't in the source data, so we show the last round's stage instead.</p>
+          <div class="stat-row" id="fundingStatRow"></div>
+        </div>
+
+        <div class="section-title"><span>📊 Top 20 by Total Raised</span></div>
+        <div class="card" style="padding:20px;">
+          <canvas id="fundingChart" width="1100" height="380" style="width:100%;"></canvas>
+        </div>
+
+        <div class="section-title">
+          <span>💰 All Companies — Funding Detail</span>
+          <span class="badge-count" id="fundingCount" style="background:#3fbb7d"></span>
+        </div>
+        <div class="toolbar">
+          <input type="text" id="fundingSearch" placeholder="Search name...">
+          <select id="fundingSegmentFilter"><option value="">All segments</option></select>
+          <select id="fundingRaisedFilter">
+            <option value="">All companies</option>
+            <option value="raised">Only with disclosed funding</option>
+            <option value="notraised">No disclosed funding</option>
+          </select>
+        </div>
+        <div class="card" style="overflow:auto;">
+          <table class="grid">
+            <thead>
+              <tr>
+                <th class="sortable" data-fsort="name">Company<span class="arrow"></span></th>
+                <th class="sortable" data-fsort="totalRaised">Total Raised ($M)<span class="arrow">▾</span></th>
+                <th class="sortable" data-fsort="lastFinancingDate">Last Round Date<span class="arrow"></span></th>
+                <th class="sortable" data-fsort="lastFinancingSize">Last Round Size ($M)<span class="arrow"></span></th>
+                <th>Last Round Stage</th>
+                <th class="sortable" data-fsort="valuation">Valuation ($M)<span class="arrow"></span></th>
+              </tr>
+            </thead>
+            <tbody id="fundingTableBody"></tbody>
+          </table>
+        </div>
+        <div class="footer-note" id="fundingMoreNote"></div>
+      </section>
+
+      <!-- ===================== FINANCIAL COMPARISON ===================== -->
+      <section id="view-financials" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#7468dd,#e0699f 100%);">
+          <h1>Financial Comparison</h1>
+          <p>All disclosed financial data, organized into interactive boards by funding stage, size, valuation, recency, and ownership — pick a board, compare the companies inside it, and send any selection straight to the Screener, Comparison, or Shortlist.</p>
+        </div>
+
+        <div class="section-title"><span>📊 Real Financial Ratios — Public Companies Only</span></div>
+        <p class="footer-note" style="margin-top:-8px;">Only companies that actually file public financial statements have real revenue/income/ratio data.
+        The other ~2,065 companies here are private startups with no disclosed financials in this dataset — see the funding-derived proxy ratios in the boards below instead.</p>
+        <div id="realFinCards" class="dash-chart-grid"></div>
+
+        <div class="prypco-subtabs" id="finTabs" style="margin-top:24px;">
+          <div class="view-tab active" data-findim="stage">🚦 Funding Stage</div>
+          <div class="view-tab" data-findim="size">💵 Funding Size</div>
+          <div class="view-tab" data-findim="valuation">📐 Valuation Tier</div>
+          <div class="view-tab" data-findim="recency">🕒 Financing Recency</div>
+          <div class="view-tab" data-findim="status">🏛️ Ownership Status</div>
+        </div>
+
+        <div id="finBoardGrid" class="pb-board-grid"></div>
+
+        <div id="finBucketDetail" style="display:none;">
+          <button class="back-btn" id="finBackBtn">← Back to boards</button>
+          <div class="detail-header">
+            <h2 id="finBucketTitle"></h2>
+            <span class="badge-count" id="finBucketCount" style="background:#7468dd;"></span>
+          </div>
+          <div class="screener-results-actions">
+            <span><strong id="finSelectedCount">0</strong> selected</span>
+            <button class="mini-btn" id="finAddShortlistBtn">★ Add to Shortlist</button>
+            <button class="mini-btn" id="finAddCompareBtn">⇄ Compare selected</button>
+            <button class="mini-btn" id="finExportBtn">⬇ Export this board (Excel)</button>
+            <button class="mini-btn" id="finOpenScreenerBtn">🔎 Open in Screener</button>
+          </div>
+          <div class="card" style="overflow:auto;">
+            <table class="grid" id="finTable">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th class="sortable" data-finsort="name">Company<span class="arrow"></span></th>
+                  <th>Segment</th>
+                  <th class="sortable" data-finsort="totalRaised">Total Raised<span class="arrow">▾</span></th>
+                  <th class="sortable" data-finsort="lastFinancingDate">Last Round Date<span class="arrow"></span></th>
+                  <th class="sortable" data-finsort="lastFinancingSize">Last Round Size<span class="arrow"></span></th>
+                  <th>Stage</th>
+                  <th class="sortable" data-finsort="valuation">Valuation<span class="arrow"></span></th>
+                  <th class="sortable" data-finsort="successProbability">Success Prob.<span class="arrow"></span></th>
+                  <th>Ownership</th>
+                  <th class="sortable" data-finsort="markupMultiple">Markup Multiple <span class="pb-derived-tag">proxy</span><span class="arrow"></span></th>
+                  <th class="sortable" data-finsort="raisedPerYear">Raised/Year <span class="pb-derived-tag">proxy</span><span class="arrow"></span></th>
+                </tr>
+              </thead>
+              <tbody id="finTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== SHORTLIST ===================== -->
+      <section id="view-shortlist" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#f5af3f,#e0699f 100%);">
+          <h1>Investment Shortlist <span class="badge-count" id="shortlistCount" style="background:rgba(255,255,255,0.25);"></span></h1>
+          <p>Your tracked candidates — ratings, status, rationale, and notes persist on the server.</p>
+        </div>
+        <div class="screener-results-actions">
+          <button class="mini-btn" id="exportShortlistBtn">⬇ Export Shortlist (Excel)</button>
+        </div>
+        <div id="shortlistList"></div>
+      </section>
+
+      <!-- ===================== REPORTS ===================== -->
+      <section id="view-reports" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#2dc0ac,#7468dd 100%);">
+          <h1>Reports & Export</h1>
+          <p>Export underlying data for offline analysis or sharing.</p>
+        </div>
+        <div class="report-grid">
+          <div class="report-card">
+            <h3 style="margin:0;">All Companies</h3>
+            <p class="subtle">Full dataset with all classifications, funding, and playbook fields.</p>
+            <button class="mini-btn primary" id="exportAllBtn">⬇ Export Excel</button>
+          </div>
+          <div class="report-card">
+            <h3 style="margin:0;">Investment Shortlist</h3>
+            <p class="subtle">Your shortlisted companies with ratings, status, rationale, and notes.</p>
+            <button class="mini-btn primary" id="exportShortlistBtn2">⬇ Export Excel</button>
+          </div>
+          <div class="report-card">
+            <h3 style="margin:0;">Current Screener Results</h3>
+            <p class="subtle">Whatever the Screener last returned, exported as-is.</p>
+            <button class="mini-btn primary" id="exportScreenerBtn2">⬇ Export Excel</button>
+          </div>
+          <div class="report-card">
+            <h3 style="margin:0;">Print This Page</h3>
+            <p class="subtle">Use your browser's print dialog (Ctrl/Cmd+P) for a PDF of a Company Profile or Comparison page — open that page first, then click here.</p>
+            <button class="mini-btn primary" id="printCurrentBtn">🖨 Print / Save as PDF</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===================== PLAYBOOKS ===================== -->
+      <section id="view-playbooks" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#8b5cf6,#f5934f 50%,#3bc3da 100%);">
+          <h1>Company Playbooks</h1>
+          <p>Pick a playbook type, then a company, to see a fun, focused one-page dossier built from real data.</p>
+        </div>
+
+        <div id="pbBoardGrid" class="pb-board-grid"></div>
+
+        <div id="pbPickerWrap" style="display:none;">
+          <button class="back-btn" id="pbBackToBoardsBtn">← Back to playbook types</button>
+          <div class="pb-picker-header">
+            <h2 id="pbPickerTitle" style="margin:0;"></h2>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <input type="text" id="pbSearch" placeholder="Search companies..." style="border:1.5px solid rgba(139,92,246,0.18);border-radius:999px;padding:8px 16px;font-family:inherit;font-size:13px;">
+              <button class="pb-surprise-btn" id="pbSurpriseBtn">🎲 Surprise Me</button>
+            </div>
+          </div>
+          <div class="pb-company-grid" id="pbCompanyGrid"></div>
+          <p class="footer-note" id="pbShownNote"></p>
+        </div>
+
+        <div id="pbDetailWrap" class="pb-detail-wrap" style="display:none;">
+          <button class="back-btn" id="pbBackToPickerBtn">← Back to companies</button>
+          <div class="pb-ribbon" id="pbRibbon"></div>
+          <div class="pb-type-switcher" id="pbTypeSwitcher"></div>
+          <div id="pbSections"></div>
+        </div>
+      </section>
+
+      <!-- ===================== PRYPCO STRATEGY ===================== -->
+      <section id="view-prypco" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#2dc0ac,#8b5cf6 60%,#e0699f 100%);">
+          <h1>Prypco Insurtech Strategy</h1>
+          <p>Across the insurtech landscape, which verticals matter most to Prypco, which companies are the best-fit partners in each, and in what order should we act?</p>
+        </div>
+
+        <div class="prypco-subtabs">
+          <div class="view-tab active" data-psub="overview">Overview</div>
+          <div class="view-tab" data-psub="map">Vertical Map</div>
+          <div class="view-tab" data-psub="landscape">Insurtech Landscape</div>
+          <div class="view-tab" data-psub="roadmap">Priority Roadmap</div>
+        </div>
+
+        <!-- Overview -->
+        <div id="prypco-overview">
+          <div class="prypco-kpi-row" id="prypcoKpiRow"></div>
+          <div class="section-title" style="margin-top:24px;"><span>Priority Tiers</span></div>
+          <div class="tier-teaser" id="prypcoTierTeaser"></div>
+          <div id="prypcoDataNote"></div>
+          <div class="cta-row">
+            <button class="cta-btn" onclick="switchPrypcoSubview('map')">🧩 Explore the Vertical Map →</button>
+            <button class="cta-btn" onclick="switchPrypcoSubview('landscape')">🔎 Browse the Insurtech Landscape →</button>
+            <button class="cta-btn" onclick="switchPrypcoSubview('roadmap')">🛣 View the Priority Roadmap →</button>
+          </div>
+        </div>
+
+        <!-- Vertical Map -->
+        <div id="prypco-map" style="display:none;">
+          <div class="vmap-toggle">
+            <button class="mini-btn primary" id="vmapModeDiagram">🕸 Diagram</button>
+            <button class="mini-btn" id="vmapModeCards">▦ Card Grid</button>
+          </div>
+          <div id="vmapDiagramWrap" class="card" style="padding:24px;">
+            <div id="vmapSvgWrap"></div>
+            <p class="footer-note">Click a node to see how it connects to Prypco's business. Line/node color = priority tier.</p>
+          </div>
+          <div id="vmapCardWrap" class="vertical-card-grid" style="display:none;"></div>
+        </div>
+
+        <!-- Landscape -->
+        <div id="prypco-landscape" style="display:none;">
+          <div class="toolbar">
+            <input type="text" id="landscapeSearch" placeholder="Search company or description...">
+            <select id="landscapeRegion"><option value="">All HQ / Regions</option></select>
+            <select id="landscapeStage"><option value="">All Stages</option></select>
+            <select id="landscapeRelevance">
+              <option value="">All Relevance</option>
+              <option value="Direct fit">★★ Direct fit</option>
+              <option value="Relevant">★ Relevant</option>
+              <option value="Moderate">Moderate</option>
+              <option value="Low">Low</option>
+            </select>
+            <select id="landscapeSort">
+              <option value="relevance">Sort: Relevance (★★ first)</option>
+              <option value="alpha">Sort: Alphabetical</option>
+              <option value="region">Sort: Region</option>
+            </select>
+            <button class="reset-filters-btn" id="resetLandscapeBtn" style="width:auto;">Reset</button>
+          </div>
+          <div class="chip-select" id="landscapeVerticalChips" style="margin-bottom:14px;"></div>
+          <div class="section-title"><span>Companies</span><span class="badge-count" id="landscapeCount" style="background:#8b5cf6;"></span></div>
+          <div class="card" style="overflow:auto;">
+            <table class="grid">
+              <thead><tr><th>Company</th><th>Stage</th><th>Vertical</th><th>Description</th><th>Relevance to Prypco</th><th></th></tr></thead>
+              <tbody id="landscapeTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Roadmap -->
+        <div id="prypco-roadmap" style="display:none;">
+          <div class="screener-results-actions">
+            <button class="mini-btn primary active" id="roadmapSortRank">Priority Order</button>
+            <button class="mini-btn" id="roadmapSortTime">Quick Wins vs. Long Plays</button>
+            <button class="mini-btn" id="roadmapPrintBtn">🖨 Export as PDF</button>
+          </div>
+          <div class="roadmap-ladder" id="roadmapLadder"></div>
+        </div>
+      </section>
+
+      <!-- ===================== COMMENTS ===================== -->
+      <section id="view-comments" style="display:none;">
+        <div class="hero" style="background:linear-gradient(120deg,#f5af3f,#8b5cf6 100%);">
+          <h1>Comments <span class="badge-count" id="commentsCount" style="background:rgba(255,255,255,0.25);"></span></h1>
+          <p>Suggest improvements, flag issues, or leave general feedback on the platform — visible to everyone.</p>
+        </div>
+        <div class="comment-form-card">
+          <form id="commentForm">
+            <div class="comment-form-row">
+              <input type="text" id="commentAuthor" placeholder="Your name (optional)" style="flex:1;min-width:160px;">
+              <select id="commentCategory">
+                <option>General</option>
+                <option>Feature Idea</option>
+                <option>Bug Report</option>
+                <option>Data Issue</option>
+              </select>
+            </div>
+            <textarea id="commentText" placeholder="What should we improve or fix?" required></textarea>
+            <button type="submit" class="mini-btn primary" style="margin-top:10px;">Post Comment</button>
+          </form>
+        </div>
+        <div id="commentsList"></div>
+      </section>
+
+      <!-- ===================== COMPANY DETAIL ===================== -->
+      <section id="view-company" style="display:none;">
+        <button class="back-btn" id="companyBackBtn">← Back</button>
+        <div class="hero" id="companyHero" style="background:linear-gradient(120deg,#8b5cf6,#e0699f);"></div>
+
+        <div class="detail-grid2">
+          <div class="card detail-card">
+            <h3>Company Info</h3>
+            <table class="kv2" id="companyInfoTable"></table>
+
+            <h3>Playbook — how to replicate this business</h3>
+            <table class="kv2" id="companyPlaybookTable"></table>
+
+            <div id="companyThesisSection"></div>
+            <div id="companyChartSection"></div>
+            <div id="companyPrypcoNote"></div>
+          </div>
+
+          <div class="card detail-card">
+            <h3>Edit Classification <span id="verifiedBadge"></span></h3>
+            <div id="editForm" class="edit-form"></div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+</div>
+
+<div class="slide-over-backdrop" id="slideOverBackdrop"></div>
+<div class="slide-over" id="slideOver"><div id="slideOverContent"></div></div>
+
+<button class="chat-fab" id="chatFab" title="Ask the Data Search Assistant">💬</button>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-panel-header">
+    <span>🔎 Data Search Assistant</span>
+    <button id="chatCloseBtn">✕</button>
+  </div>
+  <div id="chatLog"></div>
+  <div class="chat-suggestions">
+    <span class="chat-suggestion">top 5 by total raised</span>
+    <span class="chat-suggestion">UAE native companies</span>
+    <span class="chat-suggestion">how many public companies</span>
+  </div>
+  <form id="chatForm">
+    <input type="text" id="chatInput" placeholder="Ask about companies, segments, countries...">
+    <button type="submit">→</button>
+  </form>
+</div>
+
+<script src="js/common.js"></script>
+<script src="js/customfields.js"></script>
+<script src="js/scoring.js"></script>
+<script src="js/dashboard.js"></script>
+<script src="js/valuechain.js"></script>
+<script src="js/funding.js"></script>
+<script src="js/financials.js"></script>
+<script src="js/screener.js"></script>
+<script src="js/rankings.js"></script>
+<script src="js/advscreen.js"></script>
+<script src="js/comparison.js"></script>
+<script src="js/shortlist.js"></script>
+<script src="js/reports.js"></script>
+<script src="js/company.js"></script>
+<script src="js/playbooks.js"></script>
+<script src="js/prypco.js"></script>
+<script src="js/chatbot.js"></script>
+<script src="js/comments.js"></script>
+<script src="js/router.js"></script>
+<script src="js/app.js"></script>
+<script>
+document.getElementById('companyBackBtn').addEventListener('click', () => history.back());
+</script>
+</body>
+</html>
