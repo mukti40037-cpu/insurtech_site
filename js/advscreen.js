@@ -337,9 +337,11 @@ function advRenderStage3CatRows() {
       <select data-idx="${i}">
         ${allOptions.map(cc => `<option value="${cc.key}" ${cc.key === (cat.alias || cat.key) ? 'selected' : ''} ${usedKeys.includes(cc.key) && cc.key !== (cat.alias || cat.key) ? 'disabled' : ''}>${cc.label}</option>`).join('')}
       </select>
-      <input type="range" min="0" max="100" value="${cat.weight}" data-idx="${i}">
-      <span class="wval" id="advwval-${i}">${cat.weight}%</span>
-      <span class="remove-x" data-idx="${i}">×</span>
+      <div class="custom-cat-weight-row">
+        <input type="range" min="0" max="100" value="${cat.weight}" data-idx="${i}">
+        <span class="wval" id="advwval-${i}">${cat.weight}%</span>
+        <span class="remove-x" data-idx="${i}">×</span>
+      </div>
     </div>
   `).join('');
   document.querySelectorAll('#advStage3CatRows select').forEach(sel => {

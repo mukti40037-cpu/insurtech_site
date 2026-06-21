@@ -72,9 +72,11 @@ function renderCustomCatRows() {
       <select data-idx="${i}">
         ${allOptions.map(cc => `<option value="${cc.key}" ${cc.key === cat.key ? 'selected' : ''} ${usedKeys.includes(cc.key) && cc.key !== cat.key ? 'disabled' : ''}>${cc.label}</option>`).join('')}
       </select>
-      <input type="range" min="0" max="100" value="${cat.weight}" data-idx="${i}">
-      <span class="wval" id="customwval-${i}">${cat.weight}%</span>
-      <span class="remove-x" data-idx="${i}" title="Remove category">×</span>
+      <div class="custom-cat-weight-row">
+        <input type="range" min="0" max="100" value="${cat.weight}" data-idx="${i}">
+        <span class="wval" id="customwval-${i}">${cat.weight}%</span>
+        <span class="remove-x" data-idx="${i}" title="Remove category">×</span>
+      </div>
     </div>
   `).join('');
 
