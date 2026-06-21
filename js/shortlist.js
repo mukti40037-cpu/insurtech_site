@@ -27,7 +27,7 @@ async function renderShortlist() {
         </div>
         <div class="subtle" style="margin:6px 0;">${naText(c.country || c.geo)} · Founded ${naText(c.yearFounded)} · Total raised ${c.totalRaised != null ? fmtMoneyPlain(c.totalRaised) : naText(null)}</div>
         <div class="star-rating">${starsHtml(item.companyId, item.rating)}</div>
-        <textarea class="rationale-box" data-field="rationale" data-company="${escapeHtml(item.companyId)}" placeholder="Investment rationale..." rows="2" style="width:100%;margin-top:8px;border:1.5px solid rgba(139,92,246,0.18);border-radius:8px;padding:8px;font-family:inherit;font-size:12.5px;">${escapeHtml(item.rationale || '')}</textarea>
+        <textarea class="rationale-box" data-field="rationale" data-company="${escapeHtml(item.companyId)}" placeholder="Investment rationale..." rows="2" style="width:100%;margin-top:8px;border:1.5px solid rgba(155,133,196,0.18);border-radius:8px;padding:8px;font-family:inherit;font-size:12.5px;">${escapeHtml(item.rationale || '')}</textarea>
       </div>
       <div>
         <label style="font-size:11px;font-weight:700;color:var(--muted);">Status</label>
@@ -35,9 +35,9 @@ async function renderShortlist() {
           ${['Under Review','Strong Candidate','Shortlisted Finalist','Passed','On Hold'].map(s => `<option ${s===item.status?'selected':''}>${s}</option>`).join('')}
         </select>
         <label style="font-size:11px;font-weight:700;color:var(--muted);">Watchlist</label>
-        <input type="text" data-field="watchlist" data-company="${escapeHtml(item.companyId)}" value="${escapeHtml(item.watchlist || 'Default')}" style="width:100%;margin-bottom:10px;border:1.5px solid rgba(139,92,246,0.18);border-radius:8px;padding:6px 10px;font-size:12.5px;">
+        <input type="text" data-field="watchlist" data-company="${escapeHtml(item.companyId)}" value="${escapeHtml(item.watchlist || 'Default')}" style="width:100%;margin-bottom:10px;border:1.5px solid rgba(155,133,196,0.18);border-radius:8px;padding:6px 10px;font-size:12.5px;">
         <label style="font-size:11px;font-weight:700;color:var(--muted);">Internal Notes</label>
-        <textarea data-field="notes" data-company="${escapeHtml(item.companyId)}" rows="2" style="width:100%;border:1.5px solid rgba(139,92,246,0.18);border-radius:8px;padding:6px 10px;font-size:12.5px;font-family:inherit;">${escapeHtml(item.notes || '')}</textarea>
+        <textarea data-field="notes" data-company="${escapeHtml(item.companyId)}" rows="2" style="width:100%;border:1.5px solid rgba(155,133,196,0.18);border-radius:8px;padding:6px 10px;font-size:12.5px;font-family:inherit;">${escapeHtml(item.notes || '')}</textarea>
         <button class="mini-btn" style="margin-top:8px;" data-playbook="${escapeHtml(item.companyId)}">🎯 View Playbooks</button>
         <button class="mini-btn" style="margin-top:8px;color:var(--red);" data-remove="${escapeHtml(item.companyId)}">Remove</button>
       </div>

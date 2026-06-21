@@ -94,7 +94,7 @@
 
         <div class="dash-chart-grid" style="margin-top:18px;">
           <div>
-            <div class="section-title"><span>💎 Total Raised vs. Valuation <span class="badge-count" id="bubbleCount" style="background:#8b5cf6;"></span></span></div>
+            <div class="section-title"><span>💎 Total Raised vs. Valuation <span class="badge-count" id="bubbleCount" style="background:#9b85c4;"></span></span></div>
             <div class="card" style="padding:18px;"><canvas id="bubbleChart" width="600" height="380" style="width:100%;"></canvas></div>
           </div>
           <div>
@@ -106,7 +106,7 @@
 
       <!-- ===================== SCREENER ===================== -->
       <section id="view-screener" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#7468dd,#3bc3da 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#8c7fc4,#7fb8c9 100%);">
           <h1>Company Screener</h1>
           <p>Narrow the universe down using company, financial, business-quality, strategic-fit, and risk filters.</p>
         </div>
@@ -118,7 +118,7 @@
 
         <div class="screener-layout" style="margin-top:18px;">
           <div class="filter-panel" id="screener-filters">
-            <input type="text" id="scrSearch" placeholder="Search name/description..." style="width:100%;margin-bottom:14px;border:1.5px solid rgba(139,92,246,0.18);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:12.5px;">
+            <input type="text" id="scrSearch" placeholder="Search name/description..." style="width:100%;margin-bottom:14px;border:1.5px solid rgba(155,133,196,0.18);border-radius:8px;padding:8px 10px;font-family:inherit;font-size:12.5px;">
 
             <details class="filter-group" open>
               <summary>Company Information</summary>
@@ -225,7 +225,7 @@
           <button class="back-btn" id="backBtn">← Back</button>
           <div class="detail-header">
             <h2 id="detailTitle"></h2>
-            <span class="badge-count" id="detailCount" style="background:#8b5cf6"></span>
+            <span class="badge-count" id="detailCount" style="background:#9b85c4"></span>
           </div>
           <div class="toolbar">
             <input type="text" id="detailSearch" placeholder="Search within this view...">
@@ -242,7 +242,7 @@
 
       <!-- ===================== RANKINGS ===================== -->
       <section id="view-rankings" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#f5934f,#e0699f 60%,#8b5cf6 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#d99466,#d98ca3 60%,#9b85c4 100%);">
           <h1>Ranking Engine</h1>
           <p id="scoreMethodologyNote"></p>
         </div>
@@ -260,15 +260,15 @@
             <h3 style="margin-top:0;" id="weightsPanelTitle">Score Weights</h3>
             <div id="weightSliders"></div>
             <div class="weight-total" id="weightTotal"></div>
-            <button class="reset-filters-btn" id="resetWeightsBtn" style="background:rgba(139,92,246,0.1);color:var(--purple);">Reset to Lens Defaults</button>
+            <button class="reset-filters-btn" id="resetWeightsBtn" style="background:rgba(155,133,196,0.1);color:var(--purple);">Reset to Lens Defaults</button>
 
             <div class="custom-builder" id="customBuilderWrap" style="display:none;">
               <h3 style="margin-top:0;">Custom Categories</h3>
               <div id="customCatRows"></div>
-              <button class="reset-filters-btn" id="addCustomCatBtn" style="background:rgba(63,187,125,0.1);color:#3fbb7d;">+ Add Category</button>
+              <button class="reset-filters-btn" id="addCustomCatBtn" style="background:rgba(127,168,118,0.1);color:#7fa876;">+ Add Category</button>
               <div class="template-row">
-                <input type="text" id="templateNameInput" placeholder="Template name" style="flex:1;padding:6px 8px;border-radius:8px;border:1.5px solid rgba(139,92,246,0.2);font-size:13.5px;font-family:inherit;">
-                <button class="reset-filters-btn" id="saveTemplateBtn" style="background:rgba(139,92,246,0.1);color:var(--purple);">Save Template</button>
+                <input type="text" id="templateNameInput" placeholder="Template name" style="flex:1;padding:6px 8px;border-radius:8px;border:1.5px solid rgba(155,133,196,0.2);font-size:13.5px;font-family:inherit;">
+                <button class="reset-filters-btn" id="saveTemplateBtn" style="background:rgba(155,133,196,0.1);color:var(--purple);">Save Template</button>
               </div>
               <div class="template-row">
                 <select id="templateLoadSelect"><option value="">Load saved template…</option></select>
@@ -281,7 +281,7 @@
           </div>
 
           <div>
-            <div class="section-title"><span>🏆 Leaderboard</span><span class="badge-count" id="rankingsCount" style="background:#f5934f;"></span></div>
+            <div class="section-title"><span>🏆 Leaderboard</span><span class="badge-count" id="rankingsCount" style="background:#d99466;"></span></div>
             <div class="card" style="overflow:auto;">
               <table class="grid">
                 <thead><tr><th>#</th><th>Company</th><th>Segment</th><th>Score</th><th>Confidence</th><th>Recommendation</th><th>Total Raised</th><th></th></tr></thead>
@@ -295,7 +295,7 @@
 
       <!-- ===================== ADVANCED SCREENING MODE ===================== -->
       <section id="view-advscreen" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#3bc3da,#8b5cf6 60%,#e0699f 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#7fb8c9,#9b85c4 60%,#d98ca3 100%);">
           <h1>Advanced Screening Mode</h1>
           <p>A 5-stage, defensible screening pipeline — dealbreaker filters, peer-relative scoring, multi-lens validation, and a final human-judgment round. Built to be walked through in an investment committee meeting: every elimination and every ranking is independently inspectable.</p>
         </div>
@@ -323,7 +323,7 @@
 
               <h4 class="adv-assump-h">Stage 3 — Factor Weights</h4>
               <div id="advStage3CatRows"></div>
-              <button class="reset-filters-btn" id="advAddCatBtn" style="background:rgba(63,187,125,0.1);color:#3fbb7d;">+ Add Category</button>
+              <button class="reset-filters-btn" id="advAddCatBtn" style="background:rgba(127,168,118,0.1);color:#7fa876;">+ Add Category</button>
               <div class="template-row">
                 <select id="advTemplateLoadSelect"><option value="">Load a saved Rankings template…</option></select>
               </div>
@@ -345,7 +345,7 @@
 
       <!-- ===================== COMPARISON ===================== -->
       <section id="view-comparison" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#8b5cf6,#3bc3da 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#9b85c4,#7fb8c9 100%);">
           <h1>Company Comparison</h1>
           <p>Pick 2–5 companies to compare side by side.</p>
         </div>
@@ -356,7 +356,7 @@
 
       <!-- ===================== FUNDING ===================== -->
       <section id="view-funding" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#3fbb7d,#2dc0ac 50%,#3bc3da 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#7fa876,#6fa89e 50%,#7fb8c9 100%);">
           <h1>Funding & Valuations</h1>
           <p>Total raised, last round size/date, and valuation across companies — where disclosed. Round counts aren't in the source data, so we show the last round's stage instead.</p>
           <div class="stat-row" id="fundingStatRow"></div>
@@ -369,7 +369,7 @@
 
         <div class="section-title">
           <span>💰 All Companies — Funding Detail</span>
-          <span class="badge-count" id="fundingCount" style="background:#3fbb7d"></span>
+          <span class="badge-count" id="fundingCount" style="background:#7fa876"></span>
         </div>
         <div class="toolbar">
           <input type="text" id="fundingSearch" placeholder="Search name...">
@@ -400,7 +400,7 @@
 
       <!-- ===================== FINANCIAL COMPARISON ===================== -->
       <section id="view-financials" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#7468dd,#e0699f 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#8c7fc4,#d98ca3 100%);">
           <h1>Financial Comparison</h1>
           <p>All disclosed financial data, organized into interactive boards by funding stage, size, valuation, recency, and ownership — pick a board, compare the companies inside it, and send any selection straight to the Screener, Comparison, or Shortlist.</p>
         </div>
@@ -424,7 +424,7 @@
           <button class="back-btn" id="finBackBtn">← Back to boards</button>
           <div class="detail-header">
             <h2 id="finBucketTitle"></h2>
-            <span class="badge-count" id="finBucketCount" style="background:#7468dd;"></span>
+            <span class="badge-count" id="finBucketCount" style="background:#8c7fc4;"></span>
           </div>
           <div class="screener-results-actions">
             <span><strong id="finSelectedCount">0</strong> selected</span>
@@ -459,7 +459,7 @@
 
       <!-- ===================== SHORTLIST ===================== -->
       <section id="view-shortlist" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#f5af3f,#e0699f 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#f5af3f,#d98ca3 100%);">
           <h1>Investment Shortlist <span class="badge-count" id="shortlistCount" style="background:rgba(255,255,255,0.25);"></span></h1>
           <p>Your tracked candidates — ratings, status, rationale, and notes persist on the server.</p>
         </div>
@@ -471,7 +471,7 @@
 
       <!-- ===================== REPORTS ===================== -->
       <section id="view-reports" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#2dc0ac,#7468dd 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#6fa89e,#8c7fc4 100%);">
           <h1>Reports & Export</h1>
           <p>Export underlying data for offline analysis or sharing.</p>
         </div>
@@ -501,7 +501,7 @@
 
       <!-- ===================== PLAYBOOKS ===================== -->
       <section id="view-playbooks" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#8b5cf6,#f5934f 50%,#3bc3da 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#9b85c4,#d99466 50%,#7fb8c9 100%);">
           <h1>Company Playbooks</h1>
           <p>Pick a playbook type, then a company, to see a fun, focused one-page dossier built from real data.</p>
         </div>
@@ -513,7 +513,7 @@
           <div class="pb-picker-header">
             <h2 id="pbPickerTitle" style="margin:0;"></h2>
             <div style="display:flex;gap:10px;align-items:center;">
-              <input type="text" id="pbSearch" placeholder="Search companies..." style="border:1.5px solid rgba(139,92,246,0.18);border-radius:999px;padding:8px 16px;font-family:inherit;font-size:13px;">
+              <input type="text" id="pbSearch" placeholder="Search companies..." style="border:1.5px solid rgba(155,133,196,0.18);border-radius:999px;padding:8px 16px;font-family:inherit;font-size:13px;">
               <button class="pb-surprise-btn" id="pbSurpriseBtn">🎲 Surprise Me</button>
             </div>
           </div>
@@ -531,7 +531,7 @@
 
       <!-- ===================== PRYPCO STRATEGY ===================== -->
       <section id="view-prypco" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#2dc0ac,#8b5cf6 60%,#e0699f 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#6fa89e,#9b85c4 60%,#d98ca3 100%);">
           <h1>Prypco Insurtech Strategy</h1>
           <p>Across the insurtech landscape, which verticals matter most to Prypco, which companies are the best-fit partners in each, and in what order should we act?</p>
         </div>
@@ -590,7 +590,7 @@
             <button class="reset-filters-btn" id="resetLandscapeBtn" style="width:auto;">Reset</button>
           </div>
           <div class="chip-select" id="landscapeVerticalChips" style="margin-bottom:14px;"></div>
-          <div class="section-title"><span>Companies</span><span class="badge-count" id="landscapeCount" style="background:#8b5cf6;"></span></div>
+          <div class="section-title"><span>Companies</span><span class="badge-count" id="landscapeCount" style="background:#9b85c4;"></span></div>
           <div class="card" style="overflow:auto;">
             <table class="grid">
               <thead><tr><th>Company</th><th>Stage</th><th>Vertical</th><th>Description</th><th>Relevance to Prypco</th><th></th></tr></thead>
@@ -612,7 +612,7 @@
 
       <!-- ===================== COMMENTS ===================== -->
       <section id="view-comments" style="display:none;">
-        <div class="hero" style="background:linear-gradient(120deg,#f5af3f,#8b5cf6 100%);">
+        <div class="hero" style="background:linear-gradient(120deg,#f5af3f,#9b85c4 100%);">
           <h1>Comments <span class="badge-count" id="commentsCount" style="background:rgba(255,255,255,0.25);"></span></h1>
           <p>Suggest improvements, flag issues, or leave general feedback on the platform — visible to everyone.</p>
         </div>
@@ -637,7 +637,7 @@
       <!-- ===================== COMPANY DETAIL ===================== -->
       <section id="view-company" style="display:none;">
         <button class="back-btn" id="companyBackBtn">← Back</button>
-        <div class="hero" id="companyHero" style="background:linear-gradient(120deg,#8b5cf6,#e0699f);"></div>
+        <div class="hero" id="companyHero" style="background:linear-gradient(120deg,#9b85c4,#d98ca3);"></div>
 
         <div class="detail-grid2">
           <div class="card detail-card">

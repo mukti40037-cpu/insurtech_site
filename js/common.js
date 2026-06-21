@@ -1,26 +1,26 @@
 const SEGMENT_COLORS = {
-  'Distribution & Sales': '#8b5cf6',
-  'Underwriting & Risk Assessment': '#e0699f',
-  'Policy Administration & Core Systems': '#5594e8',
-  'Claims Management': '#f5934f',
-  'Customer & Member Engagement': '#3bc3da',
-  'Full-Stack Carriers / MGAs': '#3fbb7d',
-  'Reinsurance Tech': '#7468dd',
-  'Compliance / RegTech': '#ecca52',
-  'Benefits Administration': '#ec7689',
-  'Infrastructure / Enabling Tech': '#2dc0ac',
+  'Distribution & Sales': '#9b85c4',
+  'Underwriting & Risk Assessment': '#d98ca3',
+  'Policy Administration & Core Systems': '#7ca3c4',
+  'Claims Management': '#d99466',
+  'Customer & Member Engagement': '#7fb8c9',
+  'Full-Stack Carriers / MGAs': '#7fa876',
+  'Reinsurance Tech': '#8c7fc4',
+  'Compliance / RegTech': '#d9b468',
+  'Benefits Administration': '#c98599',
+  'Infrastructure / Enabling Tech': '#6fa89e',
   'Adjacent / Non-Core': '#6b6480',
 };
 
 const MODEL_COLORS = {
-  'Software / SaaS': '#8b5cf6',
-  'Full-Stack Carrier': '#3fbb7d',
-  'MGA / Delegated Underwriting Authority': '#e0699f',
-  'Broker / Agency': '#5594e8',
-  'Marketplace / Comparison Platform': '#f5934f',
-  'Data, Analytics & API Provider': '#3bc3da',
-  'Embedded / Affinity Insurance Enabler': '#7468dd',
-  'Services / BPO': '#ecca52',
+  'Software / SaaS': '#9b85c4',
+  'Full-Stack Carrier': '#7fa876',
+  'MGA / Delegated Underwriting Authority': '#d98ca3',
+  'Broker / Agency': '#7ca3c4',
+  'Marketplace / Comparison Platform': '#d99466',
+  'Data, Analytics & API Provider': '#7fb8c9',
+  'Embedded / Affinity Insurance Enabler': '#8c7fc4',
+  'Services / BPO': '#d9b468',
 };
 
 function segColor(seg) { return SEGMENT_COLORS[seg] || '#6b6480'; }
@@ -228,7 +228,7 @@ function companyListHtml(companies, limit) {
     <div style="max-height:50vh;overflow-y:auto;margin-top:10px;">
       ${shown.map(c => `
         <div class="company-hover" ${companyHoverAttrs(c)} onclick="closeSlideOver(); location.hash='#company/${encodeURIComponent(c.id)}'"
-             style="padding:9px 4px;border-bottom:1px solid rgba(139,92,246,0.08);cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
+             style="padding:9px 4px;border-bottom:1px solid rgba(155,133,196,0.08);cursor:pointer;display:flex;justify-content:space-between;align-items:center;">
           <span style="font-weight:700;font-size:13px;color:var(--indigo);">${escapeHtml(c.name)}</span>
           <span class="subtle" style="font-size:11.5px;">${naText(c.segment)}</span>
         </div>
@@ -428,7 +428,7 @@ function initSourceTooltip() {
 }
 
 /* ---------- Company logos (favicon of their real website, with colored-initial fallback) ---------- */
-const LOGO_AVATAR_COLORS = ['#8b5cf6', '#e0699f', '#3bc3da', '#f5934f', '#3fbb7d', '#7468dd', '#ecca52', '#ec7689'];
+const LOGO_AVATAR_COLORS = ['#9b85c4', '#d98ca3', '#7fb8c9', '#d99466', '#7fa876', '#8c7fc4', '#d9b468', '#c98599'];
 function avatarColor(name) {
   let hash = 0;
   for (let i = 0; i < (name || '').length; i++) hash = (hash * 31 + name.charCodeAt(i)) >>> 0;

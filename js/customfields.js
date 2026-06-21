@@ -47,8 +47,8 @@ function openManageFieldsPanel() {
     <div id="manageFieldsList"></div>
     <h3 style="margin-top:18px;">Add a field</h3>
     <div class="adv-rule-row">
-      <input type="text" id="newFieldNameInput" placeholder="Field name (e.g. Internal Priority)" style="flex:1;padding:8px 10px;border-radius:8px;border:1.5px solid rgba(139,92,246,0.2);">
-      <select id="newFieldTypeInput" style="padding:8px 10px;border-radius:8px;border:1.5px solid rgba(139,92,246,0.2);">
+      <input type="text" id="newFieldNameInput" placeholder="Field name (e.g. Internal Priority)" style="flex:1;padding:8px 10px;border-radius:8px;border:1.5px solid rgba(155,133,196,0.2);">
+      <select id="newFieldTypeInput" style="padding:8px 10px;border-radius:8px;border:1.5px solid rgba(155,133,196,0.2);">
         <option value="text">Text</option>
         <option value="number">Number</option>
         <option value="date">Date</option>

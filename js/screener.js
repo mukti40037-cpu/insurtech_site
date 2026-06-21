@@ -93,10 +93,10 @@ function runScreener() {
 
   renderFunnel([
     { label: 'All Companies', count: stage0.length, color: '#6b6480' },
-    { label: 'Company Info', count: stage1.length, color: '#5594e8' },
-    { label: 'Financial', count: stage2.length, color: '#3bc3da' },
-    { label: 'Quality / Fit', count: stage3.length, color: '#f5934f' },
-    { label: 'Risk Excludes', count: stage4.length, color: '#3fbb7d' },
+    { label: 'Company Info', count: stage1.length, color: '#7ca3c4' },
+    { label: 'Financial', count: stage2.length, color: '#7fb8c9' },
+    { label: 'Quality / Fit', count: stage3.length, color: '#d99466' },
+    { label: 'Risk Excludes', count: stage4.length, color: '#7fa876' },
   ]);
 
   screenerResultRows = sortScreenerRows(stage4);
@@ -276,7 +276,7 @@ function openBulkAddPanel() {
   const html = `
     <h2>+ Bulk Add Companies</h2>
     <p class="subtle">Paste one company name per line. Each gets added with just that name — no segment, funding, or other data is guessed.</p>
-    <textarea id="bulkAddTextarea" rows="14" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(139,92,246,0.2);font-family:inherit;" placeholder="Company One&#10;Company Two&#10;Company Three"></textarea>
+    <textarea id="bulkAddTextarea" rows="14" style="width:100%;padding:10px;border-radius:8px;border:1.5px solid rgba(155,133,196,0.2);font-family:inherit;" placeholder="Company One&#10;Company Two&#10;Company Three"></textarea>
     <button class="mini-btn primary" id="submitBulkAddBtn" style="margin-top:10px;">Add All</button>
     <div id="bulkAddStatus" class="save-status"></div>
   `;

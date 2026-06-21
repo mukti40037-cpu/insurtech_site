@@ -4,7 +4,7 @@ let landscapeFilterState = { verticals: new Set(), region: '', stage: '', releva
 let vmapMode = 'diagram';
 let roadmapSort = 'rank';
 
-const TIER_COLORS = { Critical: '#e96e6e', High: '#f5934f', Medium: '#ecca52', Watch: '#3fbb7d' };
+const TIER_COLORS = { Critical: '#c97a7a', High: '#d99466', Medium: '#d9b468', Watch: '#7fa876' };
 function tierColor(tier) { return TIER_COLORS[tier] || '#6b6480'; }
 
 async function loadPrypcoData() {
@@ -185,7 +185,7 @@ function applyLandscapeFilters() {
     <tr>
       <td><strong>${escapeHtml(c.company)}</strong>${c.uaeNative ? '<span class="uae-native-badge">UAE-Native</span>' : ''}<br><span class="region-badge">${escapeHtml(c.hqRegion)}</span></td>
       <td><span class="stage-badge">${escapeHtml(c.stage)}</span></td>
-      <td>${tagHtml(c.vertical, '#8b5cf6')}</td>
+      <td>${tagHtml(c.vertical, '#9b85c4')}</td>
       <td class="desc">${escapeHtml(c.description)}</td>
       <td>${starsHtmlPrypco(c.relevance.stars)}<div class="subtle" style="margin-top:4px;max-width:200px;">${escapeHtml(c.relevance.text)}</div></td>
       <td>${c.verticalMapMatch ? `<a href="#" class="mini-btn" onclick="event.preventDefault(); switchPrypcoSubview('map'); openVerticalDetail('${escapeHtml(c.verticalMapMatch).replace(/'/g, "\\'")}');">View in context</a>` : ''}</td>

@@ -1,5 +1,5 @@
 const COMMENT_CATEGORY_COLORS = {
-  'Bug Report': '#e96e6e', 'Feature Idea': '#3fbb7d', 'Data Issue': '#f5af3f', 'General': '#8b5cf6',
+  'Bug Report': '#c97a7a', 'Feature Idea': '#7fa876', 'Data Issue': '#f5af3f', 'General': '#9b85c4',
 };
 
 async function loadComments() {
@@ -35,7 +35,7 @@ async function renderComments() {
   list.innerHTML = comments.length ? comments.map(c => `
     <div class="comment-card">
       <div class="comment-header">
-        <span class="comment-category" style="background:${COMMENT_CATEGORY_COLORS[c.category] || '#8b5cf6'}">${escapeHtml(c.category)}</span>
+        <span class="comment-category" style="background:${COMMENT_CATEGORY_COLORS[c.category] || '#9b85c4'}">${escapeHtml(c.category)}</span>
         <strong>${escapeHtml(c.author)}</strong>
         <span class="subtle">${timeAgo(c.created_at)}${c.page ? ' · on ' + escapeHtml(c.page) : ''}</span>
         <span class="comment-delete" data-id="${c.id}" title="Remove">✕</span>

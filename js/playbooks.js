@@ -1,8 +1,8 @@
 const PLAYBOOK_TYPES = {
-  profile: { label: 'Company Profile', icon: '📋', color: '#8b5cf6', sub: 'Industry, business model, ownership, financials, products, competitors.' },
-  investment: { label: 'Investment', icon: '💰', color: '#3fbb7d', sub: 'Growth drivers, risks, valuation signals, acquisition history, diligence checklist.' },
-  operational: { label: 'Operational', icon: '⚙️', color: '#f5934f', sub: 'How it runs — operating model, technology signals, lifecycle stage.' },
-  salesbd: { label: 'Sales & BD', icon: '🤝', color: '#3bc3da', sub: 'Decision-makers, pain points, value propositions for outreach.' },
+  profile: { label: 'Company Profile', icon: '📋', color: '#9b85c4', sub: 'Industry, business model, ownership, financials, products, competitors.' },
+  investment: { label: 'Investment', icon: '💰', color: '#7fa876', sub: 'Growth drivers, risks, valuation signals, acquisition history, diligence checklist.' },
+  operational: { label: 'Operational', icon: '⚙️', color: '#d99466', sub: 'How it runs — operating model, technology signals, lifecycle stage.' },
+  salesbd: { label: 'Sales & BD', icon: '🤝', color: '#7fb8c9', sub: 'Decision-makers, pain points, value propositions for outreach.' },
 };
 
 let pbState = { board: null, search: '', companyId: null };

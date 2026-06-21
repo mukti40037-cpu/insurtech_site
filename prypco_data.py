@@ -1,7 +1,15 @@
+import os
 import re
 import pandas as pd
 
-PRYPCO_XLSX = r"C:\Users\v-mukti\Desktop\Prypco - related prompt .xlsx"
+_ROOT = os.path.dirname(__file__)
+_DESKTOP_PRYPCO_XLSX = r"C:\Users\v-mukti\Desktop\Prypco - related prompt .xlsx"
+_BUNDLED_PRYPCO_XLSX = os.path.join(_ROOT, 'data', 'prypco.xlsx')
+# Local dev keeps reading the original Desktop file if present; a deployed copy (no
+# Desktop file available) falls back to the bundled copy in data/.
+PRYPCO_XLSX = os.environ.get('PRYPCO_XLSX') or (
+    _DESKTOP_PRYPCO_XLSX if os.path.exists(_DESKTOP_PRYPCO_XLSX) else _BUNDLED_PRYPCO_XLSX
+)
 
 UAE_NATIVE_COMPANIES = {
     'Shory', 'YallaCompare', 'Bayzat', 'Salama', 'Takaful Emarat', 'Watania Takaful',

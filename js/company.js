@@ -66,7 +66,7 @@ function renderScoreExplanation(c, ctx) {
     <h3>Reasoning</h3>
     ${lensResult.breakdown.map(b => `
       <div class="pb-section" style="opacity:1;animation:none;margin-bottom:10px;">
-        <h4>${escapeHtml(b.label)} (${b.points}/${b.maxPoints}) <span class="pb-derived-tag" style="background:${b.confidence >= 60 ? 'rgba(63,187,125,0.15)' : 'rgba(233,110,110,0.15)'};color:${b.confidence >= 60 ? 'var(--green)' : 'var(--red)'};">confidence ${b.confidence}%</span></h4>
+        <h4>${escapeHtml(b.label)} (${b.points}/${b.maxPoints}) <span class="pb-derived-tag" style="background:${b.confidence >= 60 ? 'rgba(127,168,118,0.15)' : 'rgba(201,122,122,0.15)'};color:${b.confidence >= 60 ? 'var(--green)' : 'var(--red)'};">confidence ${b.confidence}%</span></h4>
         <ul>${b.bullets.map(bul => `<li>${escapeHtml(bul)}</li>`).join('')}</ul>
       </div>
     `).join('')}
@@ -289,7 +289,7 @@ function wireChart(ticker) {
     const closes = points.map(p => p.close);
     const min = Math.min(...closes), max = Math.max(...closes);
     const pad = 30, w = canvas.width - pad * 2, h = canvas.height - pad * 2;
-    ctx.strokeStyle = '#8b5cf6'; ctx.lineWidth = 2.5; ctx.beginPath();
+    ctx.strokeStyle = '#9b85c4'; ctx.lineWidth = 2.5; ctx.beginPath();
     points.forEach((p, i) => {
       const x = pad + (i / (points.length - 1)) * w;
       const y = pad + h - ((p.close - min) / (max - min || 1)) * h;

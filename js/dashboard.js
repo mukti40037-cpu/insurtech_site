@@ -87,17 +87,17 @@ function drawHBarChart(canvasId, data, opts) {
     const y = padTop + i * rowH;
     const barW = Math.max(4, (d.value / max) * barAreaW);
     const grad = ctx.createLinearGradient(padLeft, 0, padLeft + barW, 0);
-    grad.addColorStop(0, d.color || '#8b5cf6');
-    grad.addColorStop(1, '#e0699f');
+    grad.addColorStop(0, d.color || '#9b85c4');
+    grad.addColorStop(1, '#d98ca3');
     ctx.fillStyle = grad;
     const barH = rowH * 0.6;
     const barY = y + (rowH - barH) / 2;
     ctx.beginPath();
     ctx.roundRect ? ctx.roundRect(padLeft, barY, barW, barH, 6) : ctx.rect(padLeft, barY, barW, barH);
     ctx.fill();
-    ctx.fillStyle = '#0d0a16'; ctx.font = '600 12px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#3d342e'; ctx.font = '600 12px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'right';
     ctx.fillText((d.label || '').slice(0, 22), padLeft - 10, barY + barH / 2 + 4);
-    ctx.fillStyle = '#4d4760'; ctx.font = '700 12px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#7d6e60'; ctx.font = '700 12px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'left';
     ctx.fillText(d.valueLabel || String(d.value), padLeft + barW + 8, barY + barH / 2 + 4);
     if (d.onClick) regions.push({ x: 0, y, w: canvas.width, h: rowH, onClick: d.onClick });
   });
@@ -109,7 +109,7 @@ function renderTopCountries() {
   ALL.forEach(c => { if (c.country) counts[c.country] = (counts[c.country] || 0) + 1; });
   const top = Object.entries(counts).sort((a, b) => b[1] - a[1]).slice(0, 15)
     .map(([country, n]) => ({
-      label: country, value: n, valueLabel: String(n), color: '#3bc3da',
+      label: country, value: n, valueLabel: String(n), color: '#7fb8c9',
       onClick: () => {
         const companies = ALL.filter(c => c.country === country);
         openChartPopup(`🌍 ${country}`, `${companies.length} companies headquartered here`, companies, { country });
@@ -140,14 +140,14 @@ function renderFundingActivityByYear() {
     const barH = (counts[y] / max) * h;
     const x = padLeft + (i / years.length) * w + (w / years.length - barW) / 2;
     const grad = ctx.createLinearGradient(0, padTop + h - barH, 0, padTop + h);
-    grad.addColorStop(0, '#8b5cf6'); grad.addColorStop(1, '#3bc3da');
+    grad.addColorStop(0, '#9b85c4'); grad.addColorStop(1, '#7fb8c9');
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.roundRect ? ctx.roundRect(x, padTop + h - barH, barW, barH, 4) : ctx.rect(x, padTop + h - barH, barW, barH);
     ctx.fill();
-    ctx.fillStyle = '#0d0a16'; ctx.font = '700 11px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#3d342e'; ctx.font = '700 11px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'center';
     ctx.fillText(counts[y], x + barW / 2, padTop + h - barH - 6);
-    ctx.fillStyle = '#4d4760'; ctx.font = '600 11px "Segoe UI", Arial, sans-serif';
+    ctx.fillStyle = '#7d6e60'; ctx.font = '600 11px "Segoe UI", Arial, sans-serif';
     ctx.fillText(y, x + barW / 2, padTop + h + 18);
     regions.push({
       x, y: padTop, w: barW, h: h, onClick: () => {
@@ -174,9 +174,9 @@ function renderRaisedVsValuationBubble() {
   const yMin = Math.min(...ys), yMax = Math.max(...ys);
   const w = canvas.width - pad * 2, h = canvas.height - pad * 2;
 
-  ctx.strokeStyle = 'rgba(139,92,246,0.15)'; ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(155,133,196,0.15)'; ctx.lineWidth = 1;
   ctx.beginPath(); ctx.moveTo(pad, pad); ctx.lineTo(pad, pad + h); ctx.lineTo(pad + w, pad + h); ctx.stroke();
-  ctx.fillStyle = '#4d4760'; ctx.font = '600 11px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#7d6e60'; ctx.font = '600 11px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'center';
   ctx.fillText('Total Raised (log scale) →', pad + w / 2, pad + h + 32);
   ctx.save(); ctx.translate(16, pad + h / 2); ctx.rotate(-Math.PI / 2); ctx.fillText('Valuation (log scale) →', 0, 0); ctx.restore();
 
@@ -213,7 +213,7 @@ function renderCompanyAgeHistogram() {
     else buckets['20+ yrs'].push(c);
   });
   const data = Object.entries(buckets).map(([label, companies]) => ({
-    label, value: companies.length, valueLabel: String(companies.length), color: '#e0699f',
+    label, value: companies.length, valueLabel: String(companies.length), color: '#d98ca3',
     onClick: () => openChartPopup(`🎂 Companies aged ${label}`, `${companies.length} companies`, companies)
   }));
   drawHBarChart('ageHistogramChart', data, { padLeft: 90 });
@@ -254,7 +254,7 @@ function computeKpiWidget(cfg) {
 function renderKpiWidget(w) {
   const val = computeKpiWidget(w.config);
   const display = val == null ? 'No information available' : Number.isFinite(val) ? val.toLocaleString(undefined, { maximumFractionDigits: 1 }) : val;
-  return `<div class="stat-pill" style="background:rgba(139,92,246,0.08);"><span class="num" style="color:var(--purple);">${display}</span><span class="label">${escapeHtml(w.title)}</span></div>`;
+  return `<div class="stat-pill" style="background:rgba(155,133,196,0.08);"><span class="num" style="color:var(--purple);">${display}</span><span class="label">${escapeHtml(w.title)}</span></div>`;
 }
 
 function renderBarGroupWidget(w) {
@@ -264,7 +264,7 @@ function renderBarGroupWidget(w) {
   const max = Math.max(...top.map(t => t[1]), 1);
   return top.map(([label, count]) => `
     <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
-      <div style="flex:1;background:rgba(139,92,246,0.08);border-radius:6px;height:18px;overflow:hidden;"><div style="height:100%;width:${(count/max)*100}%;background:linear-gradient(90deg,#8b5cf6,#e0699f);"></div></div>
+      <div style="flex:1;background:rgba(155,133,196,0.08);border-radius:6px;height:18px;overflow:hidden;"><div style="height:100%;width:${(count/max)*100}%;background:linear-gradient(90deg,#9b85c4,#d98ca3);"></div></div>
       <div style="font-size:12.5px;font-weight:700;min-width:70px;">${escapeHtml(String(label))} (${count})</div>
     </div>`).join('') || '<div class="empty-state">No data.</div>';
 }

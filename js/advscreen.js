@@ -251,12 +251,12 @@ function advRenderStepper() {
 function advRenderFunnel() {
   if (!advResult) return;
   const steps = [
-    { label: 'Universe', value: ALL.length, color: '#8b5cf6' },
-    { label: 'Pass Dealbreakers', value: advResult.passed.length, color: '#3bc3da' },
-    { label: 'Scored & Ranked', value: advResult.passed.length, color: '#3fbb7d' },
-    { label: 'Multi-Lens Check', value: advResult.topN.length, color: '#f5934f' },
-    { label: 'Consensus Picks', value: advResult.consensus.length, color: '#ecca52' },
-    { label: 'Final Shortlist', value: advResult.finalShortlist.length, color: '#e0699f' },
+    { label: 'Universe', value: ALL.length, color: '#9b85c4' },
+    { label: 'Pass Dealbreakers', value: advResult.passed.length, color: '#7fb8c9' },
+    { label: 'Scored & Ranked', value: advResult.passed.length, color: '#7fa876' },
+    { label: 'Multi-Lens Check', value: advResult.topN.length, color: '#d99466' },
+    { label: 'Consensus Picks', value: advResult.consensus.length, color: '#d9b468' },
+    { label: 'Final Shortlist', value: advResult.finalShortlist.length, color: '#d98ca3' },
   ];
   document.getElementById('advFunnelViz').innerHTML = steps.map((s, i) => `
     <div class="funnel-step">
@@ -455,7 +455,7 @@ function advStage3Html() {
   const top = r.stage3.slice(0, 100);
   return `
     <div>
-      <div class="section-title"><span>📊 Stage 3 — Weighted Ranking</span><span class="badge-count" style="background:#f5934f;">${r.stage3.length}</span></div>
+      <div class="section-title"><span>📊 Stage 3 — Weighted Ranking</span><span class="badge-count" style="background:#d99466;">${r.stage3.length}</span></div>
       <p class="subtle">Same factor-weight model as the simple Rankings page (edit weights in the Assumptions panel) — but applied to the cluster-relative scores from Stage 2 instead of raw/global scores. Nothing is eliminated here, this is an ordering only.</p>
       <table class="grid"><thead><tr><th>#</th><th>Company</th><th>Segment</th><th>Overall Score</th></tr></thead>
         <tbody>${top.map((row, i) => `<tr><td>${i + 1}</td><td>${advCompanyChip(row.c)}</td><td>${row.c.segment ? tagHtml(row.c.segment, segColor(row.c.segment)) : naText(null)}</td><td><strong>${row.score.toFixed(1)}</strong></td></tr>`).join('')}</tbody>
@@ -481,9 +481,9 @@ function advStage4Html() {
       <div class="section-title"><span>🔍 Stage 4 — Multi-Lens Validation</span></div>
       <p class="subtle">The top ${r.topN.length} companies by Stage 3 score, re-ranked under 3 independent lenses. A <strong>Consensus Pick</strong> (top 10 in ≥${advState.consensusThreshold} of 3 lenses) is one an investment committee can trust most — it isn't winning on just one blended number.</p>
       <div class="adv-lens-row">
-        ${advLensTable('Lens A — Financial Strength', r.lensAResults, null, '#3fbb7d')}
-        ${advLensTable('Lens B — Strategic Fit', r.lensBResults, null, '#8b5cf6')}
-        ${advLensTable('Lens C — Risk-Adjusted', r.lensCResults, null, '#e0699f')}
+        ${advLensTable('Lens A — Financial Strength', r.lensAResults, null, '#7fa876')}
+        ${advLensTable('Lens B — Strategic Fit', r.lensBResults, null, '#9b85c4')}
+        ${advLensTable('Lens C — Risk-Adjusted', r.lensCResults, null, '#d98ca3')}
       </div>
       <h4 style="margin-top:22px;">⭐ Consensus Picks (${r.consensus.length})</h4>
       <table class="grid"><thead><tr><th>Company</th><th>Stage 3 Score</th><th>Lens A Rank</th><th>Lens B Rank</th><th>Lens C Rank</th></tr></thead>
@@ -546,7 +546,7 @@ function advCandidateCardHtml(x) {
     <div class="adv-candidate-card" data-candidate-id="${escapeHtml(x.c.id)}">
       <div class="adv-candidate-head">
         ${advCompanyChip(x.c)}
-        ${x.isConsensus ? '<span class="rec-badge" style="background:rgba(236,202,82,0.25);color:#9c7a06;">⭐ Consensus Pick</span>' : '<span class="rec-badge" style="background:rgba(139,92,246,0.12);color:var(--purple);">Manually added</span>'}
+        ${x.isConsensus ? '<span class="rec-badge" style="background:rgba(217,180,104,0.25);color:#9c7a06;">⭐ Consensus Pick</span>' : '<span class="rec-badge" style="background:rgba(155,133,196,0.12);color:var(--purple);">Manually added</span>'}
         <span class="adv-candidate-combined">Combined: <strong>${x.combined.toFixed(1)}</strong></span>
         <span class="remove-x" data-remove-candidate="${escapeHtml(x.c.id)}" title="Remove candidate">×</span>
       </div>

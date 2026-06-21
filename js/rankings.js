@@ -1,9 +1,9 @@
 const REC_COLORS = {
-  'Top Investment Opportunity': '#3fbb7d',
-  'Best Acquisition Target': '#8b5cf6',
-  'Best Business Model to Replicate': '#3bc3da',
-  'Strategic Partnership Candidate': '#f5934f',
-  'High Potential, Higher Risk': '#ecca52',
+  'Top Investment Opportunity': '#7fa876',
+  'Best Acquisition Target': '#9b85c4',
+  'Best Business Model to Replicate': '#7fb8c9',
+  'Strategic Partnership Candidate': '#d99466',
+  'High Potential, Higher Risk': '#d9b468',
   'Requires Further Due Diligence': '#6b6480',
 };
 
@@ -133,7 +133,7 @@ function updateCustomWeightTotal() {
   let normBtn = document.getElementById('normalizeWeightsBtn');
   if (total !== 100 && customCategories.some(c => c.weight > 0)) {
     if (!normBtn) {
-      el.insertAdjacentHTML('afterend', `<button class="reset-filters-btn" id="normalizeWeightsBtn" style="background:rgba(245,147,79,0.12);color:#f5934f;width:100%;margin-top:6px;">Normalize to 100%</button>`);
+      el.insertAdjacentHTML('afterend', `<button class="reset-filters-btn" id="normalizeWeightsBtn" style="background:rgba(217,148,102,0.12);color:#d99466;width:100%;margin-top:6px;">Normalize to 100%</button>`);
       document.getElementById('normalizeWeightsBtn').onclick = normalizeCustomWeights;
     }
   } else if (normBtn) {
@@ -265,14 +265,14 @@ function renderScoreDistribution() {
     const barH = (count / max) * h;
     const x = padLeft + (i / 10) * w + (w / 10 - barW) / 2;
     const grad = ctx.createLinearGradient(0, padTop + h - barH, 0, padTop + h);
-    grad.addColorStop(0, '#8b5cf6'); grad.addColorStop(1, '#e0699f');
+    grad.addColorStop(0, '#9b85c4'); grad.addColorStop(1, '#d98ca3');
     ctx.fillStyle = grad;
     ctx.beginPath();
     ctx.roundRect ? ctx.roundRect(x, padTop + h - barH, barW, barH, 4) : ctx.rect(x, padTop + h - barH, barW, barH);
     ctx.fill();
-    ctx.fillStyle = '#0d0a16'; ctx.font = '700 11px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'center';
+    ctx.fillStyle = '#3d342e'; ctx.font = '700 11px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'center';
     if (count) ctx.fillText(count, x + barW / 2, padTop + h - barH - 6);
-    ctx.fillStyle = '#4d4760'; ctx.font = '600 10px "Segoe UI", Arial, sans-serif';
+    ctx.fillStyle = '#7d6e60'; ctx.font = '600 10px "Segoe UI", Arial, sans-serif';
     ctx.fillText(`${i * 10}-${i * 10 + 9}`, x + barW / 2, padTop + h + 16);
     if (count) {
       regions.push({

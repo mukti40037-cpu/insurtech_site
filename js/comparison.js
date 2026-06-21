@@ -1,5 +1,5 @@
 let compareIds = [];
-const COMPARE_COLORS = ['#8b5cf6', '#e0699f', '#3bc3da', '#f5934f', '#3fbb7d'];
+const COMPARE_COLORS = ['#9b85c4', '#d98ca3', '#7fb8c9', '#d99466', '#7fa876'];
 
 function renderComparePicker() {
   document.getElementById('comparePicker').innerHTML = Array.from({ length: 5 }).map((_, i) => {
@@ -134,7 +134,7 @@ function drawRadar(scored) {
   const cx = canvas.width / 2, cy = canvas.height / 2, r = Math.min(cx, cy) - 60;
   const angleStep = (Math.PI * 2) / dims.length;
 
-  ctx.strokeStyle = 'rgba(139,92,246,0.15)';
+  ctx.strokeStyle = 'rgba(155,133,196,0.15)';
   for (let ring = 1; ring <= 4; ring++) {
     ctx.beginPath();
     dims.forEach((d, i) => {
@@ -145,7 +145,7 @@ function drawRadar(scored) {
     });
     ctx.closePath(); ctx.stroke();
   }
-  ctx.fillStyle = '#4d4760'; ctx.font = '600 11px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'center';
+  ctx.fillStyle = '#7d6e60'; ctx.font = '600 11px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'center';
   dims.forEach((d, i) => {
     const a = -Math.PI / 2 + i * angleStep;
     const x = cx + Math.cos(a) * (r + 28), y = cy + Math.sin(a) * (r + 28);
@@ -178,13 +178,13 @@ function drawCompareBars(companies) {
   const regions = [];
   pairs.forEach((p, i) => {
     const y = padTop + i * rowH;
-    ctx.fillStyle = '#0d0a16'; ctx.font = '700 12px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'right';
+    ctx.fillStyle = '#3d342e'; ctx.font = '700 12px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'right';
     ctx.fillText((p.name || '').slice(0, 18), padLeft - 10, y + 14);
     const w1 = (p.raised / max) * (canvas.width - padLeft - 30);
     const w2 = (p.val / max) * (canvas.width - padLeft - 30);
-    ctx.fillStyle = '#8b5cf6'; ctx.fillRect(padLeft, y, w1, 12);
-    ctx.fillStyle = '#e0699f'; ctx.fillRect(padLeft, y + 16, w2, 12);
-    ctx.fillStyle = '#4d4760'; ctx.font = '600 10px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'left';
+    ctx.fillStyle = '#9b85c4'; ctx.fillRect(padLeft, y, w1, 12);
+    ctx.fillStyle = '#d98ca3'; ctx.fillRect(padLeft, y + 16, w2, 12);
+    ctx.fillStyle = '#7d6e60'; ctx.font = '600 10px "Segoe UI", Arial, sans-serif'; ctx.textAlign = 'left';
     ctx.fillText('$' + Math.round(p.raised) + 'M raised', padLeft + w1 + 6, y + 10);
     ctx.fillText('$' + Math.round(p.val) + 'M valuation', padLeft + w2 + 6, y + 26);
     regions.push({ x: 0, y, w: canvas.width, h: rowH, onClick: () => { location.hash = '#company/' + encodeURIComponent(p.c.id); } });

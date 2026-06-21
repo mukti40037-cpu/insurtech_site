@@ -32,7 +32,7 @@ function renderFundingChart(rows) {
     const barW = Math.max(4, (c.totalRaised / max) * barAreaW);
     const grad = ctx.createLinearGradient(padLeft, 0, padLeft + barW, 0);
     grad.addColorStop(0, segColor(c.segment));
-    grad.addColorStop(1, '#e0699f');
+    grad.addColorStop(1, '#d98ca3');
     ctx.fillStyle = grad;
     const barH = rowH * 0.62;
     const barY = y + (rowH - barH) / 2;
@@ -40,13 +40,13 @@ function renderFundingChart(rows) {
     ctx.roundRect ? ctx.roundRect(padLeft, barY, barW, barH, 6) : ctx.rect(padLeft, barY, barW, barH);
     ctx.fill();
 
-    ctx.fillStyle = '#0d0a16';
+    ctx.fillStyle = '#3d342e';
     ctx.font = '600 12px "Segoe UI", Arial, sans-serif';
     ctx.textAlign = 'right';
     ctx.fillText((c.name || '').slice(0, 26), padLeft - 10, barY + barH / 2 + 4);
 
     ctx.textAlign = 'left';
-    ctx.fillStyle = '#4d4760';
+    ctx.fillStyle = '#7d6e60';
     ctx.font = '700 12px "Segoe UI", Arial, sans-serif';
     ctx.fillText('$' + Math.round(c.totalRaised).toLocaleString() + 'M', padLeft + barW + 8, barY + barH / 2 + 4);
 

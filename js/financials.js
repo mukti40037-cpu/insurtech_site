@@ -5,7 +5,7 @@ const FIN_DIMENSIONS = {
   recency: { label: 'Financing Recency', icon: '🕒' },
   status: { label: 'Ownership Status', icon: '🏛️' },
 };
-const FIN_BOARD_COLORS = ['#8b5cf6', '#e0699f', '#3bc3da', '#f5934f', '#3fbb7d', '#7468dd', '#ecca52', '#ec7689', '#5594e8', '#e96e6e'];
+const FIN_BOARD_COLORS = ['#9b85c4', '#d98ca3', '#7fb8c9', '#d99466', '#7fa876', '#8c7fc4', '#d9b468', '#c98599', '#7ca3c4', '#c97a7a'];
 
 let finDimension = 'stage';
 let finBucketRows = [];
@@ -158,7 +158,7 @@ function renderFinTable() {
       <td>${c.totalRaised != null ? fmtMoneyPlain(c.totalRaised) : naText(null)}</td>
       <td>${fmtDate(c.lastFinancingDate)}</td>
       <td>${c.lastFinancingSize != null ? fmtMoneyPlain(c.lastFinancingSize) : naText(null)}</td>
-      <td>${c.lastFinancingDealType ? tagHtml(c.lastFinancingDealType, '#8b5cf6') : naText(null)}</td>
+      <td>${c.lastFinancingDealType ? tagHtml(c.lastFinancingDealType, '#9b85c4') : naText(null)}</td>
       <td>${companyValuation(c) != null ? fmtMoneyPlain(companyValuation(c)) : naText(null)}</td>
       <td>${c.successProbability != null ? c.successProbability + '/100' : naText(null)}</td>
       <td>${naText(c.ownershipStatus)}</td>
