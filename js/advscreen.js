@@ -67,6 +67,7 @@ let advManualSearchTimer = null;
 
 function advDefaultState() {
   return {
+    universeSegments: [],
     rules: DEALBREAKER_RULE_DEFS.map(d => ({ ...d, enabled: true, threshold: d.defaultThreshold })),
     sizeBands: { small: 5, mid: 50 },
     stage3Categories: LENS_PRESETS.investment.categories.map(c => ({ ...c })),
@@ -79,6 +80,35 @@ function advDefaultState() {
   };
 }
 
+function advUniverse() {
+  return advState.universeSegments.length ? ALL.filter(c => advState.universeSegments.includes(c.segment)) : ALL;
+}
+
+function advRenderUniverseFilter() {
+  const segments = META.segments || [];
+  document.getElementById('advUniverseChips').innerHTML = segments.map(seg => `
+    <label class="chip-option ${advState.universeSegments.includes(seg) ? 'active' : ''}" data-chip>
+      <input type="checkbox" name="advUniverseChip" value="${escapeHtml(seg)}" style="display:none;" ${advState.universeSegments.includes(seg) ? 'checked' : ''}>${escapeHtml(seg)}
+    </label>`).join('');
+  document.querySelectorAll('#advUniverseChips .chip-option').forEach(chip => {
+    chip.addEventListener('click', () => {
+      const cb = chip.querySelector('input');
+      cb.checked = !cb.checked;
+      chip.classList.toggle('active', cb.checked);
+      advState.universeSegments = [...document.querySelectorAll('#advUniverseChips input:checked')].map(el => el.value);
+      advRecompute();
+    });
+  });
+  advUpdateUniverseCount();
+}
+
+function advUpdateUniverseCount() {
+  const el = document.getElementById('advUniverseCount');
+  if (!el) return;
+  const n = advUniverse().length;
+  el.textContent = advState.universeSegments.length ? `${n} of ${ALL.length} companies in scope` : `All ${ALL.length} companies in scope`;
+}
+
 function advSizeBand(c, bands) {
   if (c.totalRaised == null) return 'Undisclosed';
   if (c.totalRaised < bands.small) return 'Small';
@@ -88,12 +118,13 @@ function advSizeBand(c, bands) {
 
 /* ---------- Core pipeline (pure computation over current advState) ---------- */
 function runAdvPipeline() {
+  const universe = advUniverse();
   const metricsById = {};
   ALL.forEach(c => { metricsById[c.id] = computeAllMetrics(c, SCORE_CTX); });
 
   const excluded = [];
   const passed = [];
-  ALL.forEach(c => {
+  universe.forEach(c => {
     const metrics = metricsById[c.id];
     let hit = null;
     for (const rule of advState.rules) {
@@ -103,7 +134,7 @@ function runAdvPipeline() {
     if (hit) excluded.push({ c, rule: hit, reason: hit.reasonFn(c, hit.threshold, metrics) });
     else passed.push(c);
   });
-  const exclusionRate = ALL.length ? excluded.length / ALL.length : 0;
+  const exclusionRate = universe.length ? excluded.length / universe.length : 0;
 
   const clusters = {};
   passed.forEach(c => {
@@ -212,7 +243,7 @@ function runAdvPipeline() {
   const finalShortlist = candidates.slice(0, advState.finalShortlistN);
 
   return {
-    metricsById, excluded, passed, exclusionRate, clusters, clusterStats, clusterKeyById, usedFallbackById,
+    universe, metricsById, excluded, passed, exclusionRate, clusters, clusterStats, clusterKeyById, usedFallbackById,
     stage3, topN, lensAResults, lensBResults, lensCResults, lensRankById, consensus, lowConfidence,
     candidates, finalShortlist,
   };
@@ -220,6 +251,7 @@ function runAdvPipeline() {
 
 function advRecompute() {
   advResult = runAdvPipeline();
+  advUpdateUniverseCount();
   advRenderFunnel();
   advRenderStepper();
   advRenderStage();
@@ -251,7 +283,7 @@ function advRenderStepper() {
 function advRenderFunnel() {
   if (!advResult) return;
   const steps = [
-    { label: 'Universe', value: ALL.length, color: '#9b85c4' },
+    { label: 'Universe', value: advResult.universe.length, color: '#9b85c4' },
     { label: 'Pass Dealbreakers', value: advResult.passed.length, color: '#7fb8c9' },
     { label: 'Scored & Ranked', value: advResult.passed.length, color: '#7fa876' },
     { label: 'Multi-Lens Check', value: advResult.topN.length, color: '#d99466' },
@@ -422,7 +454,7 @@ function advStage1Html() {
     <div>
       <div class="section-title"><span>🚫 Stage 1 — Dealbreaker Filter</span></div>
       <p class="subtle">Only true hard exclusions eliminate a company here — not "slightly weak on one metric." Edit the rules in the Assumptions panel; this stage recomputes live.</p>
-      <div class="adv-funnel-line">${ALL.length} companies → <strong>${r.passed.length} pass</strong> (${(r.exclusionRate * 100).toFixed(1)}% excluded)</div>
+      <div class="adv-funnel-line">${r.universe.length} companies${advState.universeSegments.length ? ' (filtered universe)' : ''} → <strong>${r.passed.length} pass</strong> (${(r.exclusionRate * 100).toFixed(1)}% excluded)</div>
       <details class="adv-collapsible">
         <summary>Show ${r.excluded.length} excluded companies and their reasons</summary>
         <table class="grid"><thead><tr><th>Company</th><th>Rule</th><th>Reason</th></tr></thead>
@@ -672,8 +704,9 @@ async function advSaveScorecardField(companyId, key, value) {
 function advShowTraceability(companyId) {
   const c = byId(companyId);
   if (!c || !advResult) return;
+  const inUniverse = advResult.universe.some(x => x.id === companyId);
   const excludedEntry = advResult.excluded.find(x => x.c.id === companyId);
-  const passed = !excludedEntry;
+  const passed = inUniverse && !excludedEntry;
   const metrics = advResult.metricsById[companyId];
   const stage3Entry = advResult.stage3.find(r => r.c.id === companyId);
   const stage3Rank = stage3Entry ? advResult.stage3.findIndex(r => r.c.id === companyId) + 1 : null;
@@ -683,7 +716,11 @@ function advShowTraceability(companyId) {
 
   let html = `<h2>${escapeHtml(c.name)}</h2><p class="subtle">${naText(c.segment)} · ${naText(c.hq)}</p>`;
   html += `<h3>Stage 1 — Dealbreaker Filter</h3>`;
-  html += passed ? `<p style="color:var(--green);font-weight:700;">✓ Passed</p>` : `<p style="color:var(--red);font-weight:700;">✗ Excluded — ${escapeHtml(excludedEntry.rule.label)}</p><p class="subtle">${escapeHtml(excludedEntry.reason)}</p>`;
+  if (!inUniverse) {
+    html += `<p style="color:var(--muted);font-weight:700;">⊘ Outside the current Universe Filter</p><p class="subtle">This company's segment ("${naText(c.segment)}") isn't included in the Universe Filter above, so it never ran through Stages 1–4. It's only here because it was added manually in Stage 5.</p>`;
+  } else {
+    html += passed ? `<p style="color:var(--green);font-weight:700;">✓ Passed</p>` : `<p style="color:var(--red);font-weight:700;">✗ Excluded — ${escapeHtml(excludedEntry.rule.label)}</p><p class="subtle">${escapeHtml(excludedEntry.reason)}</p>`;
+  }
 
   if (passed) {
     const clusterKey = advResult.clusterKeyById[companyId];
@@ -703,19 +740,19 @@ function advShowTraceability(companyId) {
     } else {
       html += `<p class="subtle">Did not make the top ${advState.stage4TopN} carried into Stage 4.</p>`;
     }
+  }
 
-    html += `<h3>Stage 5 — Final Comparison</h3>`;
-    const isCandidate = advState.manuallyAdded.has(companyId) || (lensRank && lensRank.inCount >= advState.consensusThreshold);
-    if (isCandidate) {
-      html += `<table class="kv2"><tbody>
-        <tr><th>Management Quality</th><td>${naText(sc.management_quality)}</td></tr>
-        <tr><th>Integration Complexity</th><td>${naText(sc.integration_complexity)}</td></tr>
-        <tr><th>Market Timing</th><td>${naText(sc.market_timing)}</td></tr>
-        <tr><th>Deal Feasibility</th><td>${naText(sc.deal_feasibility)}</td></tr>
-      </tbody></table><p class="subtle">Edit these on the Stage 5 candidate card.</p>`;
-    } else {
-      html += `<p class="subtle">Not currently a Stage 5 candidate — add it manually on Stage 5 if you believe it was missed.</p>`;
-    }
+  html += `<h3>Stage 5 — Final Comparison</h3>`;
+  const isCandidate = advState.manuallyAdded.has(companyId) || (lensRank && lensRank.inCount >= advState.consensusThreshold);
+  if (isCandidate) {
+    html += `<table class="kv2"><tbody>
+      <tr><th>Management Quality</th><td>${naText(sc.management_quality)}</td></tr>
+      <tr><th>Integration Complexity</th><td>${naText(sc.integration_complexity)}</td></tr>
+      <tr><th>Market Timing</th><td>${naText(sc.market_timing)}</td></tr>
+      <tr><th>Deal Feasibility</th><td>${naText(sc.deal_feasibility)}</td></tr>
+    </tbody></table><p class="subtle">Edit these on the Stage 5 candidate card.</p>`;
+  } else {
+    html += `<p class="subtle">Not currently a Stage 5 candidate — add it manually on Stage 5 if you believe it was missed.</p>`;
   }
   html += `<p style="margin-top:16px;"><a href="#company/${encodeURIComponent(companyId)}" style="color:var(--purple);font-weight:700;">Open full Company Profile →</a></p>`;
   openSlideOver(html);
@@ -734,6 +771,7 @@ async function initAdvScreenPage() {
   }
   await advLoadTemplatesIntoDropdown();
   document.getElementById('advAddCatBtn').onclick = advAddCategory;
+  advRenderUniverseFilter();
   advRenderAssumptions();
   document.getElementById('advAssumptionsBody').style.display = advAssumptionsOpen ? '' : 'none';
   advRecompute();
