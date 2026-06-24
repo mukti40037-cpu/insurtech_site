@@ -50,6 +50,76 @@ function renderTopPicks() {
   }
 }
 
+/* ---------- Extraordinary Startup Stories — real facts only, curated by real signals ---------- */
+const STORY_COLORS = ['#9b85c4', '#d98ca3', '#7fb8c9', '#7fa876', '#d99466', '#8c7fc4', '#6fa89e', '#d9b468'];
+
+function buildStoryFacts(c) {
+  const facts = [];
+  if (c.totalRaised != null) {
+    const investorCount = c.activeInvestors ? c.activeInvestors.split(',').length : null;
+    facts.push(`Raised $${Math.round(c.totalRaised).toLocaleString()}M${investorCount ? ` from ${investorCount} active investor${investorCount > 1 ? 's' : ''}` : ''}${c.yearFounded ? ` since ${c.yearFounded}` : ''}.`);
+  }
+  if (c.moat) facts.push(`Moat: ${c.moat}.`);
+  if (c.lastFinancingDealType && c.lastFinancingSize != null) {
+    facts.push(`Last round: ${c.lastFinancingDealType} of $${Math.round(c.lastFinancingSize).toLocaleString()}M${c.lastFinancingDate ? ' (' + fmtDate(c.lastFinancingDate) + ')' : ''}.`);
+  }
+  if (c.description) facts.push(c.description.length > 140 ? c.description.slice(0, 140).trim() + '…' : c.description);
+  return facts;
+}
+
+function renderStartupStories() {
+  const ctx = buildScoreContext(ALL);
+  const candidates = ALL.filter(c => c.description && c.totalRaised != null && c.ownershipStatus !== 'Acquired/Merged');
+  const ranked = candidates
+    .map(c => ({ c, score: computeLensScore(c, ctx, 'investment').overallScore }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 12);
+
+  document.getElementById('startupStoriesGrid').innerHTML = ranked.map((r, i) => {
+    const color = STORY_COLORS[i % STORY_COLORS.length];
+    const facts = buildStoryFacts(r.c);
+    return `<div class="pb-board" style="background:linear-gradient(135deg,${color},${color}aa);min-height:220px;cursor:pointer;" data-story-id="${escapeHtml(r.c.id)}">
+      ${companyLogoHtml(r.c, 40)}
+      <div>
+        <div class="pb-title">${escapeHtml(r.c.name)}</div>
+        <div class="pb-sub">${facts.map(f => escapeHtml(f)).join(' ')}</div>
+      </div>
+      <div class="pb-cta">View full profile →</div>
+    </div>`;
+  }).join('') || '<div class="empty-state">No companies have enough disclosed data yet to feature here.</div>';
+
+  document.querySelectorAll('[data-story-id]').forEach(el => {
+    el.onclick = () => { location.hash = '#company/' + encodeURIComponent(el.dataset.storyId); };
+  });
+}
+
+/* ---------- Potentially Raising Soon — proxy from funding recency + stage, clearly not a confirmed signal ---------- */
+function renderRaisingSoon() {
+  const now = Date.now();
+  const candidates = ALL.filter(c =>
+    c.totalRaised != null && c.lastFinancingDate &&
+    c.businessStatus !== 'Profitable' &&
+    c.ownershipStatus !== 'Acquired/Merged'
+  ).map(c => {
+    const t = new Date(c.lastFinancingDate).getTime();
+    const yrsSince = isNaN(t) ? null : (now - t) / (1000 * 60 * 60 * 24 * 365);
+    return { c, yrsSince };
+  }).filter(r => r.yrsSince != null && r.yrsSince >= 1.25)
+    .sort((a, b) => b.yrsSince - a.yrsSince)
+    .slice(0, 30);
+
+  document.getElementById('raisingSoonBody').innerHTML = candidates.map(({ c, yrsSince }) => `
+    <tr>
+      <td><span class="company-name company-hover" ${companyHoverAttrs(c)} onclick="location.hash='#company/${encodeURIComponent(c.id)}'" style="display:inline-flex;align-items:center;gap:8px;">${companyLogoHtml(c, 20)}${escapeHtml(c.name)}</span></td>
+      <td>${c.segment ? tagHtml(c.segment, segColor(c.segment)) : naText(null)}</td>
+      <td>${fmtDate(c.lastFinancingDate)}${c.lastFinancingDealType ? ' · ' + escapeHtml(c.lastFinancingDealType) : ''}</td>
+      <td>${yrsSince.toFixed(1)} yrs ago</td>
+      <td>${fmtMoneyPlain(c.totalRaised)}</td>
+      <td>${naText(c.businessStatus)}</td>
+    </tr>
+  `).join('') || '<tr><td colspan="6" class="empty-state">No companies currently match this proxy signal.</td></tr>';
+}
+
 function renderSegmentTreemap() {
   const counts = {};
   ALL.forEach(c => { if (c.segment) counts[c.segment] = (counts[c.segment] || 0) + 1; });
@@ -353,6 +423,8 @@ function openAddWidgetPanel() {
 function initDashboardPage() {
   renderDashboardKpis();
   renderTopPicks();
+  renderStartupStories();
+  renderRaisingSoon();
   renderCustomWidgets();
   renderSegmentTreemap();
   renderTopCountries();
