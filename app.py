@@ -64,6 +64,7 @@ COMPANY_FIELD_MAP = {
     'realFinPeriod': 'real_fin_period', 'realFinRevenue': 'real_fin_revenue',
     'realFinNetIncome': 'real_fin_net_income', 'realFinKeyRatios': 'real_fin_key_ratios',
     'realFinSource': 'real_fin_source',
+    'researchSourceUrl': 'research_source_url', 'researchSourceNote': 'research_source_note',
 }
 COMPANY_NUMERIC_FIELDS = {'totalRaised', 'lastFinancingValuation', 'valuationEstimate', 'successProbability',
                           'lastFinancingSize', 'yearFounded'}
@@ -247,6 +248,8 @@ def row_to_company(d):
         'realFinNetIncome': d.get('real_fin_net_income'),
         'realFinKeyRatios': d.get('real_fin_key_ratios'),
         'realFinSource': d.get('real_fin_source'),
+        'researchSourceUrl': d.get('research_source_url'),
+        'researchSourceNote': d.get('research_source_note'),
     }
 
 
@@ -803,6 +806,7 @@ FRIENDLY_COL_NAMES = {
     'successProbability': 'Success Probability', 'primaryIndustryCode': 'PitchBook Industry Code',
     'emergingSpaces': 'Emerging Spaces',
     'verticals': 'Verticals',
+    'researchSourceUrl': 'Research Source URL', 'researchSourceNote': 'Research Source Note',
 }
 
 

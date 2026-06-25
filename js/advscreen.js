@@ -667,7 +667,7 @@ function advRenderClusterMembers(clusterKey, metricKey) {
       <tbody>${cl.members.map(c => {
         const m = advResult.metricsById[c.id];
         const fallback = advResult.usedFallbackById[c.id];
-        return `<tr><td>${advCompanyChip(c)}${fallback ? ' <span class="pb-derived-tag">global fallback</span>' : ''}</td><td>${m[mk].score}</td><td>${m._z[mk].toFixed(2)}</td><td>${m._rel[mk].toFixed(1)}</td></tr>`;
+        return `<tr><td>${advCompanyChip(c)}${fallback ? ' <span class="pb-derived-tag">global fallback</span>' : ''}</td><td>${m[mk].score.toFixed(1)}</td><td>${m._z[mk].toFixed(2)}</td><td>${m._rel[mk].toFixed(1)}</td></tr>`;
       }).join('')}</tbody>
     </table>`;
   }
@@ -726,7 +726,7 @@ function advShowTraceability(companyId) {
     const clusterKey = advResult.clusterKeyById[companyId];
     const cl = advResult.clusters[clusterKey];
     html += `<h3>Stage 2 — Cluster</h3><p>Cluster: <strong>${escapeHtml(cl.segment)} · ${escapeHtml(cl.band)}</strong> (${cl.members.length} peers)${advResult.usedFallbackById[companyId] ? ' <span class="pb-derived-tag">global fallback used (too few peers)</span>' : ''}</p>
-      <table class="kv2"><tbody>${CANONICAL_CATEGORIES.map(cat => `<tr><th>${escapeHtml(cat.label)}</th><td>raw ${metrics[cat.key].score} · z ${metrics._z[cat.key].toFixed(2)} · cluster-relative ${metrics._rel[cat.key].toFixed(1)}</td></tr>`).join('')}</tbody></table>`;
+      <table class="kv2"><tbody>${CANONICAL_CATEGORIES.map(cat => `<tr><th>${escapeHtml(cat.label)}</th><td>raw ${metrics[cat.key].score.toFixed(1)} · z ${metrics._z[cat.key].toFixed(2)} · cluster-relative ${metrics._rel[cat.key].toFixed(1)}</td></tr>`).join('')}</tbody></table>`;
 
     html += `<h3>Stage 3 — Weighted Ranking</h3><p>Overall Score: <strong>${stage3Entry.score.toFixed(1)}/100</strong> — rank #${stage3Rank} of ${advResult.passed.length}.</p>`;
 

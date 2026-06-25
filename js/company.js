@@ -159,6 +159,7 @@ function renderCompanyDetail(id) {
     <tr><th>Valuation ($M)</th><td>${companyValuation(c) != null ? fmtMoney(companyValuation(c)) : naText(null)}</td></tr>
     <tr><th>Active Investors</th><td>${naText(c.activeInvestors)}</td></tr>
     <tr><th>Competitors</th><td>${naText(c.competitors)}</td></tr>
+    ${(c.researchSourceUrl || c.researchSourceNote) ? `<tr><th>Data Source</th><td>${withSource(escapeHtml(c.researchSourceNote || 'Added via web research — view source'), c.researchSourceUrl, 'View source')}</td></tr>` : ''}
   `;
 
   document.getElementById('companyPlaybookTable').innerHTML = `
